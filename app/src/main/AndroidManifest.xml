@@ -12,6 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ispecapp">
         <activity
+            android:name=".ClientesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MenuPrincipalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RecSenhaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

@@ -9,21 +9,30 @@
     android:background="@drawable/background_gradiente"
     >
     <RelativeLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:orientation="horizontal"
         android:padding="10dp"
+
         >
+
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/companyLogo"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
             android:src="@drawable/logoispecfinal"
+            android:layout_centerVertical="true"
             />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewProfilePic"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            app:cardCornerRadius="50dp" > <!-- Adjust the radius as needed -->
+            app:cardCornerRadius="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            >
 
             <ImageView
                 android:layout_width="match_parent"
@@ -32,7 +41,35 @@
                 android:src="@drawable/profilepic" />
 
         </androidx.cardview.widget.CardView>
-
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/menuBody"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/cinzaClaro"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/header"
+        >
+
+
+        <com.google.android.material.search.SearchBar
+            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:hint="Pesquisar"
+            >
+        </com.google.android.material.search.SearchBar>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
 
 </RelativeLayout>

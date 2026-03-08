@@ -19,7 +19,7 @@
         android:layout_width="115dp"
         android:layout_height="115dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_calendar_dots_duotone"
+        android:src="@drawable/ic_c_calendar_dots_duotone"
         >
 
     </ImageView>

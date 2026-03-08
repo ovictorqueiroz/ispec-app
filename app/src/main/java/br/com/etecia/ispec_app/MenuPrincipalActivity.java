@@ -1,26 +1,24 @@
+package br.com.etecia.ispec_app;
+
 import android.os.Bundle;
+
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import java.util.Arrays;
-import java.util.List;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class MenuPrincipalActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-
-        // Seus dados (grade com 6 itens)
-        List<String> dados = Arrays.asList("Item 1", "Item 2", "Item 3",
-                "Item 4", "Item 5", "Item 6");
-
-        // Cria adapter e configura grade (2 colunas)
-        RecyclerView.Adapter adapter = new RecyclerView.Adapter(dados) {
-        };
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.menu_principal_layout);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
     }
 }

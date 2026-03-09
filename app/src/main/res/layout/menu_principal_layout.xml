@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/header"
-        android:background="@drawable/bg_branco"
+        android:background="@drawable/bg_cinza_claro"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -54,8 +54,11 @@
         <com.google.android.material.search.SearchBar
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="Pesquisar"></com.google.android.material.search.SearchBar>
+            android:layout_height="45dp"
+            android:hint="Pesquisar"
+            android:backgroundTint="@color/cinzaClaro"
+            android:elevation="15dp"
+            ></com.google.android.material.search.SearchBar>
 
 
         <GridLayout

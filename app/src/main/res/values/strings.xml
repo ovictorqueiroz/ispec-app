@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ispec-app</string>
+    <string name="app_name">iSpec</string>
     
     <string-array name="titulos_menuPrincpal">
         <item>Avisos</item>

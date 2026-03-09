@@ -5,9 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="MenuPrincipalActivity"
-    android:background="@drawable/background_gradiente"
-    >
+    android:background="@drawable/bg_gradiente"
+    tools:context="MenuPrincipalActivity">
+
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -21,18 +21,16 @@
             android:id="@+id/companyLogo"
             android:layout_width="85dp"
             android:layout_height="85dp"
-            android:src="@drawable/logoispecfinal"
             android:layout_centerVertical="true"
-            />
+            android:src="@drawable/logoispecfinal" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewProfilePic"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            app:cardCornerRadius="50dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            >
+            app:cardCornerRadius="50dp">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -47,35 +45,265 @@
         android:id="@+id/menuBody"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/cinzaClaro"
-        android:gravity="center_horizontal"
         android:layout_below="@+id/header"
-        >
+        android:background="@drawable/bg_branco"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
 
         <com.google.android.material.search.SearchBar
-            android:layout_height="50dp"
+            android:id="@+id/search_bar"
             android:layout_width="match_parent"
-            android:hint="Pesquisar"
-            >
-        </com.google.android.material.search.SearchBar>
+            android:layout_height="50dp"
+            android:hint="Pesquisar"></com.google.android.material.search.SearchBar>
 
 
-        <RelativeLayout
+        <GridLayout
+            android:id="@+id/gridLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            >
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+            android:columnCount="2"
+            android:rowCount="3"
+            android:orientation="vertical"
 
-        </RelativeLayout>
+            >
+
+            <androidx.cardview.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_margin="15dp"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="8dp"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:layout_width="115dp"
+                        android:layout_height="115dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_a_bell_duotone">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:gravity="center_horizontal"
+                        android:text="Avisos"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_margin="15dp"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="8dp"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:layout_width="115dp"
+                        android:layout_height="115dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_b_users_duotone">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:gravity="center_horizontal"
+                        android:text="Clientes"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_margin="15dp"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="8dp"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:layout_width="115dp"
+                        android:layout_height="115dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_c_calendar_dots_duotone">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:gravity="center_horizontal"
+                        android:text="Agenda"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:layout_margin="15dp"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="8dp"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:layout_width="115dp"
+                        android:layout_height="115dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_d_file_text">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:gravity="center_horizontal"
+                        android:text="Relatórios"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
+                android:layout_row="2"
+                android:layout_column="0"
+                android:layout_margin="15dp"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="8dp"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:layout_width="115dp"
+                        android:layout_height="115dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_e_file_plus_duotone">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:gravity="center_horizontal"
+                        android:text="Cadastrar Equipamento"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
+                android:layout_row="2"
+                android:layout_column="1"
+                android:layout_margin="15dp"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="8dp"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <ImageView
+                        android:layout_width="115dp"
+                        android:layout_height="115dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_f_gear_six_duotone">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:gravity="center_horizontal"
+                        android:text="Configurações"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+        </GridLayout>
     </LinearLayout>
 
 

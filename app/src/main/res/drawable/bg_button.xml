@@ -6,5 +6,6 @@
         android:endColor="@color/vermelhoClaro"
         android:type="linear" />
 
+    <corners android:radius="30dp"/>
 
 </shape>

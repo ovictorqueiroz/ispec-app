@@ -12,19 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ispecapp">
         <activity
+            android:name=".NvSenhaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CodSenhaActivity"
+            android:exported="false" />
+        <activity
             android:name=".ClientesActivity"
             android:exported="false" />
         <activity
             android:name=".MenuPrincipalActivity"
-            android:exported="true">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".RecSenhaActivity"
             android:exported="false" />
@@ -33,11 +31,16 @@
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>

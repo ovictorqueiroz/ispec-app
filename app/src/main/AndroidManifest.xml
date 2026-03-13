@@ -13,10 +13,10 @@
         android:theme="@style/Theme.Ispecapp">
         <activity
             android:name=".NvSenhaActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".CodSenhaActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".ClientesActivity"
             android:exported="false" />
@@ -25,10 +25,10 @@
             android:exported="true" />
         <activity
             android:name=".RecSenhaActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".SplashActivity"
             android:exported="true">

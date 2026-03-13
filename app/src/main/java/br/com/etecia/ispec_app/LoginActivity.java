@@ -47,16 +47,16 @@ public class LoginActivity extends AppCompatActivity {
         btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email, senha;
-                email = txtEmail.getText().toString();
-                senha = txtSenha.getText().toString();
 
-                if (email.equals("izzy")&&senha.equals("izzy")){
-                    startActivity(new Intent(getApplicationContext(),MenuPrincipalActivity.class));
+                String email = txtEmail.getText().toString().trim();
+                String senha = txtSenha.getText().toString().trim();
+
+                if(email.isEmpty() || senha.isEmpty()){
+                    Toast.makeText(getApplicationContext(),
+                            "Por favor, preencha todos os campos", Toast.LENGTH_SHORT).show();
+                } else {
+                    startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
                     finish();
-
-                }else{
-                    Toast.makeText(getApplicationContext(),"Usuário ou senha inválidos",Toast.LENGTH_SHORT).show();
                 }
             }
         });

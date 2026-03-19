@@ -89,6 +89,7 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardAvisos"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
@@ -124,6 +125,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardClientes"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
@@ -168,6 +170,7 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardAgenda"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
@@ -203,6 +206,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardRelatorios"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
@@ -247,6 +251,7 @@
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardCadEquipamentos"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
@@ -282,6 +287,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardScanQRCode"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_perfil"
+        android:icon="@drawable/ic_user_duotone"
+        android:title="Perfil" />
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/home_duotone"
+        android:title="Início" />
+
+    <item
+        android:id="@+id/nav_config"
+        android:icon="@drawable/ic_f_gear_six_duotone"
+        android:title="Configurações" />
+
+
+
+</menu>

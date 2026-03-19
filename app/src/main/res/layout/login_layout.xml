@@ -26,7 +26,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            app:startIconDrawable="@drawable/email"
+            app:startIconDrawable="@drawable/ic_email"
             app:boxBackgroundColor="@color/white"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="20dp"
@@ -50,7 +50,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            app:startIconDrawable="@drawable/senha"
+            app:startIconDrawable="@drawable/ic_senha"
             app:boxBackgroundColor="@color/white"
             app:boxBackgroundMode="outline"
             app:boxCornerRadiusBottomEnd="20dp"

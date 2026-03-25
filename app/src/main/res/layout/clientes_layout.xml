@@ -1,14 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ClientesActivity">
-    <TextView
-        android:layout_width="wrap_content"
+    android:background="@drawable/bg_gradiente"
+    tools:context="MenuPrincipalActivity">
+
+    <!-- HEADER -->
+    <RelativeLayout
+
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Clientes está funcionando!"
-        />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:padding="10dp">
+
+        <!-- SEARCH BAR -->
+        <com.google.android.material.search.SearchBar
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Pesquisar"
+            android:backgroundTint="@color/white"
+            android:elevation="8dp" />
+
+
+            <TextView
+                android:id="@+id/txtCLientes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Clientes"
+                android:layout_centerHorizontal="true"
+                android:textSize="30sp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_below="@+id/search_bar"
+                />
+
+
+    </RelativeLayout>
+
+    <!-- BOTTOM NAV -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_cinza_claro"
+        app:elevation="8dp"
+        app:itemIconTint="@color/cinzaEscuro"
+        app:itemTextColor="@color/cinzaEscuro"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_nav_menu" />
+
+    <!-- BODY: entre header e bottom nav -->
+    <LinearLayout
+        android:id="@+id/menuBody"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="95dp"
+        android:layout_below="@+id/header"
+        android:background="@drawable/bg_cinza_claro"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvClientes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

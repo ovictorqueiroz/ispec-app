@@ -35,6 +35,7 @@ public class ClientesActivity extends AppCompatActivity {
         List<ClienteModel> listaClientes = new ArrayList<>();
         listaClientes.add(new ClienteModel(1L, "Etec Irmã Agostina", "Av. Feliciano Coreia, s/n - SP"));
         listaClientes.add(new ClienteModel(2L, "Alvaro Mercado", "Av. Feliciano Coreia, 380 - SP"));
+        listaClientes.add(new ClienteModel(3L, "Posto Serrano", "Av. Belmira Marin, 380 - SP"));
 
         ClienteAdapter adapter = new ClienteAdapter(listaClientes);
         rvClientes.setAdapter(adapter);

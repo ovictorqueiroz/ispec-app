@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ispecapp">
         <activity
+            android:name=".CadastroEquipamentoActivity"
+            android:exported="false" />
+        <activity
             android:name=".NvSenhaActivity"
             android:exported="true" />
         <activity

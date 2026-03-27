@@ -15,27 +15,27 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class CadastroEquipamentoActivity extends AppCompatActivity {
     // Campos comuns
-    EditText edtNome, edtLocalizacao, edtDataInstalacao;
-    Spinner spinnerStatus, spinnerTipo;
+    private EditText edtNome, edtLocalizacao, edtDataInstalacao;
+    private Spinner spinnerStatus, spinnerTipo;
 
     // Campos Extintor
-    LinearLayout camposExtintor;
-    Spinner spinnerClasseFogo;
-    EditText edtCapacidade, edtDataValidade, edtPressao;
+    private LinearLayout camposExtintor;
+    private Spinner spinnerClasseFogo;
+    private EditText edtCapacidade, edtDataValidade, edtPressao;
 
     // Campos Alarme
-    LinearLayout camposAlarme;
-    Spinner spinnerTipoSensor;
-    EditText edtUltimaVerificacao;
-    Switch switchFuncionando;
+    private LinearLayout camposAlarme;
+    private Spinner spinnerTipoSensor;
+    private EditText edtUltimaVerificacao;
+    private Switch switchFuncionando;
 
     // Campos Hidrante
-    LinearLayout camposHidrante;
-    EditText edtPressaoAgua, edtCompMangueira;
-    Switch switchDisponivel;
+    private LinearLayout camposHidrante;
+    private EditText edtPressaoAgua, edtCompMangueira;
+    private Switch switchDisponivel;
 
     // Botão
-    Button btnCadastrar;
+    private Button btnCadastrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

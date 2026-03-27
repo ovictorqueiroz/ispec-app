@@ -12,8 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ispecapp">
         <activity
-            android:name=".CadastroEquipamentoActivity"
+            android:name=".AvisosActivity"
             android:exported="false" />
+        <activity
+            android:name=".CadastroEquipamentoActivity"
+            android:exported="true" />
         <activity
             android:name=".NvSenhaActivity"
             android:exported="true" />
@@ -22,7 +25,7 @@
             android:exported="true" />
         <activity
             android:name=".ClientesActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".MenuPrincipalActivity"
             android:exported="true" />

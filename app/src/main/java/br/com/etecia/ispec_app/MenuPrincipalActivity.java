@@ -26,8 +26,17 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             return insets;
         });
 
+        cardAvisos = findViewById(R.id.cardAvisos);
         cardClientes = findViewById(R.id.cardClientes);
         cardCadEquipamentos = findViewById(R.id.cardCadEquipamentos);
+
+        cardAvisos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), AvisosActivity.class));
+                finish();
+            }
+        });
 
         cardClientes.setOnClickListener(new View.OnClickListener() {
             @Override

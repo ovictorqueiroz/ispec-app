@@ -50,14 +50,14 @@ public class NvSenhaActivity extends AppCompatActivity {
                 if (senha.equals(csenha) && !senha.isEmpty()) {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(NvSenhaActivity.this);
-                    builder.setTitle("Sistema de criação de senha!");
+                    builder.setTitle("Sistema de criação de senha.");
                     builder.setMessage("Senha criada com sucesso!!!");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
                             Toast.makeText(getApplicationContext(),
-                                    "Senha criada com sucesso", Toast.LENGTH_SHORT).show();
+                                    "Senha criada com sucesso.", Toast.LENGTH_SHORT).show();
 
                             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                             finish();

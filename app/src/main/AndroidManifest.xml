@@ -12,8 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ispecapp">
         <activity
-            android:name=".AvisosActivity"
+            android:name=".TermActivity"
             android:exported="false" />
+        <activity
+            android:name=".TermServActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AvisosActivity"
+            android:exported="true" />
         <activity
             android:name=".CadastroEquipamentoActivity"
             android:exported="true" />

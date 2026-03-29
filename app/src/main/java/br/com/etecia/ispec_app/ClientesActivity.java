@@ -1,6 +1,9 @@
 package br.com.etecia.ispec_app;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientesActivity extends AppCompatActivity {
-
+    private ImageView arrowLeft;
 
 
     @Override
@@ -26,6 +29,14 @@ public class ClientesActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+        arrowLeft = findViewById(R.id.arrowLeft);
+        arrowLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+                finish();
+            }
         });
 
         RecyclerView rvClientes = findViewById(R.id.rvClientes);

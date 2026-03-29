@@ -19,12 +19,12 @@
 
 
         <ImageView
-            android:id="@+id/companyLogo"
+            android:id="@+id/arrowLeft"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:scaleType="fitCenter"
-            android:src="@drawable/logoispecfinal" />
+            android:src="@drawable/ic_arrow_left" />
 
 
         <TextView
@@ -89,22 +89,43 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Código do Cliente"
+                    android:textColor="@color/vermelhoEscuro"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edtIdCliente"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/cinzaEscuro"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:hint="Código do Cliente"
+                    android:inputType="number"
+                    android:padding="12dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white" />
+
+                <!-- CAMPO: Nome -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="Nome"
                     android:textColor="@color/vermelhoEscuro"
-                    android:textStyle="bold"
                     android:textSize="14sp"
-                    />
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/edtNome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/cinzaEscuro"
                     android:hint="Nome do equipamento"
                     android:inputType="text"
-                    android:background="@color/cinzaEscuro"
+                    android:padding="12dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
-                    android:padding="12dp"
 
                     />
 
@@ -112,11 +133,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:text="Localização"
                     android:textColor="@color/vermelhoEscuro"
-                    android:textStyle="bold"
                     android:textSize="14sp"
-                    android:layout_marginTop="12dp"/>
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/edtLocalizacao"
@@ -124,65 +145,66 @@
                     android:layout_height="wrap_content"
                     android:background="@color/cinzaEscuro"
                     android:hint="Localização do equipamento"
-                    android:textColorHint="@color/white"
-                    android:padding="12dp"/>
+                    android:textColor="@color/white"
+                    android:padding="12dp"
+                    android:textColorHint="@color/white" />
 
                 <!-- CAMPO: Data de Instalação -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:text="Data de Instalação"
                     android:textColor="@color/vermelhoEscuro"
-                    android:textStyle="bold"
                     android:textSize="14sp"
-                    android:layout_marginTop="12dp"/>
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/edtDataInstalacao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/cinzaEscuro"
+                    android:clickable="true"
+                    android:focusable="false"
                     android:hint="dd/mm/aaaa"
                     android:inputType="none"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:background="@color/cinzaEscuro"
+                    android:padding="12dp"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:padding="12dp"/>
+                    android:textColorHint="@color/white" />
 
                 <!-- CAMPO: Status -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:text="Status"
                     android:textColor="@color/vermelhoEscuro"
-                    android:textStyle="bold"
                     android:textSize="14sp"
-                    android:layout_marginTop="12dp"/>
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spinnerStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/cinzaEscuro"
-                    android:padding="12dp"/>
+                    android:padding="12dp" />
 
                 <!-- CAMPO: Tipo de Equipamento -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:text="Tipo de Equipamento"
                     android:textColor="@color/vermelhoEscuro"
-                    android:textStyle="bold"
                     android:textSize="14sp"
-                    android:layout_marginTop="12dp"/>
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/spinnerTipo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/cinzaEscuro"
-                    android:padding="12dp"/>
+                    android:padding="12dp" />
 
                 <!-- CAMPOS: Extintor (visibilidade controlada pela Activity) -->
                 <LinearLayout
@@ -195,80 +217,80 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         android:text="Classe do Fogo"
                         android:textColor="@color/vermelhoEscuro"
-                        android:textStyle="bold"
                         android:textSize="14sp"
-                        android:layout_marginTop="12dp"/>
+                        android:textStyle="bold" />
 
                     <Spinner
                         android:id="@+id/spinnerClasseFogo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/cinzaEscuro"
-                        android:padding="12dp"/>
+                        android:padding="12dp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         android:text="Capacidade (kg)"
                         android:textColor="@color/vermelhoEscuro"
-                        android:textStyle="bold"
                         android:textSize="14sp"
-                        android:layout_marginTop="12dp"/>
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/edtCapacidade"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/cinzaEscuro"
                         android:hint="Ex: 6.0"
                         android:inputType="numberDecimal"
-                        android:background="@color/cinzaEscuro"
+                        android:padding="12dp"
                         android:textColor="@color/white"
-                        android:textColorHint="@color/white"
-                        android:padding="12dp"/>
+                        android:textColorHint="@color/white" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         android:text="Data de Validade"
                         android:textColor="@color/vermelhoEscuro"
-                        android:textStyle="bold"
                         android:textSize="14sp"
-                        android:layout_marginTop="12dp"/>
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/edtDataValidade"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/cinzaEscuro"
+                        android:clickable="true"
+                        android:focusable="false"
                         android:hint="dd/mm/aaaa"
                         android:inputType="none"
-                        android:focusable="false"
-                        android:clickable="true"
-                        android:background="@color/cinzaEscuro"
+                        android:padding="12dp"
                         android:textColor="@color/white"
-                        android:textColorHint="@color/white"
-                        android:padding="12dp"/>
+                        android:textColorHint="@color/white" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
                         android:text="Pressão (bar)"
                         android:textColor="@color/vermelhoEscuro"
-                        android:textStyle="bold"
                         android:textSize="14sp"
-                        android:layout_marginTop="12dp"/>
+                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/edtPressao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/cinzaEscuro"
                         android:hint="Ex: 12"
                         android:inputType="number"
-                        android:background="@color/cinzaEscuro"
+                        android:padding="12dp"
                         android:textColor="@color/white"
-                        android:textColorHint="@color/white"
-                        android:padding="12dp"/>
+                        android:textColorHint="@color/white" />
 
                 </LinearLayout>
 
@@ -280,69 +302,59 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <LinearLayout
-                        android:id="@+id/camposAlarme"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
+                        android:layout_marginTop="12dp"
+                        android:text="Tipo de Sensor"
+                        android:textColor="@color/vermelhoEscuro"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Tipo de Sensor"
-                            android:textColor="@color/vermelhoEscuro"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:layout_marginTop="12dp"/>
+                    <Spinner
+                        android:id="@+id/spinnerTipoSensor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/cinzaEscuro"
+                        android:padding="12dp" />
 
-                        <Spinner
-                            android:id="@+id/spinnerTipoSensor"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/cinzaEscuro"
-                            android:padding="12dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Última Verificação"
+                        android:textColor="@color/vermelhoEscuro"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Última Verificação"
-                            android:textColor="@color/vermelhoEscuro"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:layout_marginTop="12dp"/>
+                    <EditText
+                        android:id="@+id/edtUltimaVerificacao"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/cinzaEscuro"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:hint="dd/mm/aaaa"
+                        android:inputType="none"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
 
-                        <EditText
-                            android:id="@+id/edtUltimaVerificacao"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="dd/mm/aaaa"
-                            android:inputType="none"
-                            android:focusable="false"
-                            android:clickable="true"
-                            android:background="@color/cinzaEscuro"
-                            android:textColor="@color/white"
-                            android:textColorHint="@color/white"
-                            android:padding="12dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Funcionando"
+                        android:textColor="@color/vermelhoEscuro"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Funcionando"
-                            android:textColor="@color/vermelhoEscuro"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:layout_marginTop="12dp"/>
-
-                        <Switch
-                            android:id="@+id/switchFuncionando"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:layout_marginTop="4dp"/>
-
-                    </LinearLayout>
-
+                    <Switch
+                        android:id="@+id/switchFuncionando"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:checked="true" />
                 </LinearLayout>
 
                 <!-- CAMPOS: Hidrante -->
@@ -353,70 +365,61 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <LinearLayout
-                        android:id="@+id/camposHidrante"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
+                        android:layout_marginTop="12dp"
+                        android:text="Pressão da Água (bar)"
+                        android:textColor="@color/vermelhoEscuro"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Pressão da Água (bar)"
-                            android:textColor="@color/vermelhoEscuro"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:layout_marginTop="12dp"/>
+                    <EditText
+                        android:id="@+id/edtPressaoAgua"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/cinzaEscuro"
+                        android:hint="Ex: 5.0"
+                        android:inputType="numberDecimal"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
 
-                        <EditText
-                            android:id="@+id/edtPressaoAgua"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Ex: 5.0"
-                            android:inputType="numberDecimal"
-                            android:background="@color/cinzaEscuro"
-                            android:textColor="@color/white"
-                            android:textColorHint="@color/white"
-                            android:padding="12dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Comprimento da Mangueira (m)"
+                        android:textColor="@color/vermelhoEscuro"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Comprimento da Mangueira (m)"
-                            android:textColor="@color/vermelhoEscuro"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:layout_marginTop="12dp"/>
+                    <EditText
+                        android:id="@+id/edtCompMangueira"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/cinzaEscuro"
+                        android:hint="Ex: 20.0"
+                        android:inputType="numberDecimal"
+                        android:padding="12dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white" />
 
-                        <EditText
-                            android:id="@+id/edtCompMangueira"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Ex: 20.0"
-                            android:inputType="numberDecimal"
-                            android:background="@color/cinzaEscuro"
-                            android:textColor="@color/white"
-                            android:textColorHint="@color/white"
-                            android:padding="12dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Disponível"
+                        android:textColor="@color/vermelhoEscuro"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Disponível"
-                            android:textColor="@color/vermelhoEscuro"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:layout_marginTop="12dp"/>
-
-                        <Switch
-                            android:id="@+id/switchDisponivel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:layout_marginTop="4dp"/>
-
-                    </LinearLayout>
+                    <Switch
+                        android:id="@+id/switchDisponivel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:checked="true" />
 
                 </LinearLayout>
 
@@ -427,10 +430,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:backgroundTint="@color/vermelhoClaro"
+                    android:padding="14dp"
                     android:text="Cadastrar"
                     android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:padding="14dp"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
         </ScrollView>

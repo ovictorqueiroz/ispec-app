@@ -10,35 +10,47 @@
 
     <!-- HEADER -->
     <RelativeLayout
-
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
 
-        <!-- SEARCH BAR -->
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/search_bar"
+        <LinearLayout
+            android:id="@+id/searchRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Pesquisar"
-            android:backgroundTint="@color/white"
-            android:elevation="8dp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
+            <ImageView
+                android:id="@+id/arrowLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_arrow_left" />
 
-            <TextView
-                android:id="@+id/txtCLientes"
+            <!-- SEARCH BAR -->
+            <com.google.android.material.search.SearchBar
+                android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Clientes"
-                android:layout_centerHorizontal="true"
-                android:textSize="30sp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_below="@+id/search_bar"
-                />
+                android:backgroundTint="@color/white"
+                android:elevation="8dp"
+                android:hint="Pesquisar" />
 
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtCLientes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/searchRow"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="Clientes"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
@@ -60,19 +72,17 @@
         android:id="@+id/menuBody"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="95dp"
         android:layout_below="@+id/header"
         android:background="@drawable/bg_cinza_claro"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:paddingBottom="95dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvClientes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"
-            />
-
+            android:padding="8dp" />
 
     </LinearLayout>
 

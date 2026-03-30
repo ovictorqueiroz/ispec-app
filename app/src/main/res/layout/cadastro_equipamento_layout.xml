@@ -98,14 +98,15 @@
                     android:id="@+id/edtIdCliente"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/cinzaEscuro"
+                    android:background="@drawable/bg_campos"
                     android:clickable="true"
                     android:focusable="false"
                     android:hint="Código do Cliente"
                     android:inputType="number"
                     android:padding="12dp"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/white" />
+                    android:textColorHint="@color/white"
+                    />
 
                 <!-- CAMPO: Nome -->
                 <TextView
@@ -120,7 +121,7 @@
                     android:id="@+id/edtNome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/cinzaEscuro"
+                    android:background="@drawable/bg_campos"
                     android:hint="Nome do equipamento"
                     android:inputType="text"
                     android:padding="12dp"
@@ -143,7 +144,7 @@
                     android:id="@+id/edtLocalizacao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/cinzaEscuro"
+                    android:background="@drawable/bg_campos"
                     android:hint="Localização do equipamento"
                     android:textColor="@color/white"
                     android:padding="12dp"
@@ -163,7 +164,7 @@
                     android:id="@+id/edtDataInstalacao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/cinzaEscuro"
+                    android:background="@drawable/bg_campos"
                     android:clickable="true"
                     android:focusable="false"
                     android:hint="dd/mm/aaaa"
@@ -186,8 +187,10 @@
                     android:id="@+id/spinnerStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/cinzaEscuro"
-                    android:padding="12dp" />
+                    android:background="@drawable/bg_campos"
+                    android:padding="12dp"
+
+                    />
 
                 <!-- CAMPO: Tipo de Equipamento -->
                 <TextView
@@ -199,14 +202,14 @@
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
+                <!-- CAMPOS: Extintor (visibilidade controlada pela Activity) -->
                 <Spinner
                     android:id="@+id/spinnerTipo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/cinzaEscuro"
+                    android:background="@drawable/bg_campos"
                     android:padding="12dp" />
 
-                <!-- CAMPOS: Extintor (visibilidade controlada pela Activity) -->
                 <LinearLayout
                     android:id="@+id/camposExtintor"
                     android:layout_width="match_parent"
@@ -227,7 +230,7 @@
                         android:id="@+id/spinnerClasseFogo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/cinzaEscuro"
+                        android:background="@drawable/bg_campos"
                         android:padding="12dp" />
 
                     <TextView
@@ -243,7 +246,7 @@
                         android:id="@+id/edtCapacidade"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/cinzaEscuro"
+                        android:background="@drawable/bg_campos"
                         android:hint="Ex: 6.0"
                         android:inputType="numberDecimal"
                         android:padding="12dp"
@@ -263,7 +266,7 @@
                         android:id="@+id/edtDataValidade"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/cinzaEscuro"
+                        android:background="@drawable/bg_campos"
                         android:clickable="true"
                         android:focusable="false"
                         android:hint="dd/mm/aaaa"
@@ -285,7 +288,7 @@
                         android:id="@+id/edtPressao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/cinzaEscuro"
+                        android:background="@drawable/bg_campos"
                         android:hint="Ex: 12"
                         android:inputType="number"
                         android:padding="12dp"
@@ -315,7 +318,7 @@
                         android:id="@+id/spinnerTipoSensor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/cinzaEscuro"
+                        android:background="@drawable/bg_campos"
                         android:padding="12dp" />
 
                     <TextView
@@ -331,7 +334,7 @@
                         android:id="@+id/edtUltimaVerificacao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/cinzaEscuro"
+                        android:background="@drawable/bg_campos"
                         android:clickable="true"
                         android:focusable="false"
                         android:hint="dd/mm/aaaa"
@@ -378,7 +381,7 @@
                         android:id="@+id/edtPressaoAgua"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/cinzaEscuro"
+                        android:background="@drawable/bg_campos"
                         android:hint="Ex: 5.0"
                         android:inputType="numberDecimal"
                         android:padding="12dp"
@@ -398,7 +401,7 @@
                         android:id="@+id/edtCompMangueira"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/cinzaEscuro"
+                        android:background="@drawable/bg_campos"
                         android:hint="Ex: 20.0"
                         android:inputType="numberDecimal"
                         android:padding="12dp"

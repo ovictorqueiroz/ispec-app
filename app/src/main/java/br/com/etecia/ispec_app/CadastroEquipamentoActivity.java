@@ -1,6 +1,8 @@
 package br.com.etecia.ispec_app;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,10 +15,16 @@ import android.widget.Spinner;
 import android.widget.Switch;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 public class CadastroEquipamentoActivity extends AppCompatActivity {
     //Seta Voltar
@@ -46,6 +54,25 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
     // Botão
     private Button btnCadastrar;
+
+    //DatePicker
+
+    private void datePicker(EditText campo){
+        LocalDate currentDate = LocalDate.now();
+
+        int ano = currentDate.getYear();
+        int mes = currentDate.getMonthValue();
+        int dia = currentDate.getDayOfMonth();
+        DatePickerDialog dialog = new DatePickerDialog(
+                this,
+                (view, year, month, dayOfMonth) -> {
+                    String dataFormatada = String.format("%02d/%02d/%04d", dayOfMonth, month+1, year);
+                    campo.setText(dataFormatada);
+                },
+                ano, mes, dia
+        );
+        dialog.show();
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +173,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
             }
 
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 camposAlarme.setVisibility(View.GONE);
@@ -154,5 +182,8 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
             }
         });
 
+
+        edtDataInstalacao.setOnClickListener(v -> {datePicker(edtDataInstalacao);});
+        edtDataValidade.setOnClickListener(v -> {datePicker(edtDataValidade);});
     }
 }

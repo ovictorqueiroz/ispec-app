@@ -5,13 +5,76 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".AvisosActivity">
+    android:background="@drawable/bg_gradiente"
+    tools:context="MenuPrincipalActivity">
 
 
-<EditText
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Essa tela ta funcinando"/>
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/arrowLeft"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_arrow_left" />
+
+
+        <TextView
+            android:id="@+id/txtAviso"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Avisos"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:padding="18dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_list"
+            app:tint="@color/white" />
+
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_cinza_claro"
+        app:elevation="8dp"
+        app:itemIconTint="@color/cinzaEscuro"
+        app:itemTextColor="@color/cinzaEscuro"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_nav_menu" />
+
+    <LinearLayout
+        android:id="@+id/menuBody"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header"
+        android:background="@drawable/bg_cinza_claro"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="95dp">
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerAvisos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"/>
+    </LinearLayout>
 
 </RelativeLayout>

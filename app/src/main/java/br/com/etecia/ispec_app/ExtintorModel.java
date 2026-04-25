@@ -1,6 +1,7 @@
 package br.com.etecia.ispec_app;
 
-public class ExtintorModel extends EquipamentoModel {
+public class
+ExtintorModel extends EquipamentoModel {
 
     @SerializedName("tipo")
     private final String tipo = "extintor"; // obrigatório para o @JsonTypeInfo do backend

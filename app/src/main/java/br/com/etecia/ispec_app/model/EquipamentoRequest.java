@@ -5,14 +5,14 @@ import com.google.gson.annotations.SerializedName;
 public class EquipamentoRequest {
 
     // Campos comuns
-    @SerializedName("idCliente")
-    private int idCliente;
+    @SerializedName("cliente")
+    private IdWrapper cliente;
 
     @SerializedName("nome")
     private String nome;
 
     @SerializedName("localizacao")
-    private String localizacao;
+    private IdWrapper localizacao;
 
     @SerializedName("dataInstalacao")
     private String dataInstalacao;   // formato: dd/MM/yyyy
@@ -21,7 +21,7 @@ public class EquipamentoRequest {
     private String status;           // "Ativo" ou "Inativo"
 
     @SerializedName("tipoEquipamento")
-    private String tipoEquipamento;  // "Alarme", "Extintor" ou "Hidrante"
+    private IdWrapper tipoEquipamento;  // "Alarme", "Extintor" ou "Hidrante"
 
     // Campos Extintor
     @SerializedName("classeFogo")
@@ -60,14 +60,14 @@ public class EquipamentoRequest {
     // Getters e Setters
     // ----------------------------------------------------------------
 
-    public int getIdCliente() { return idCliente; }
-    public void setIdCliente(int idCliente) { this.idCliente = idCliente; }
+    public IdWrapper getCliente() { return cliente; }
+    public void setCliente(IdWrapper cliente) { this.cliente = cliente; }
 
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
 
-    public String getLocalizacao() { return localizacao; }
-    public void setLocalizacao(String localizacao) { this.localizacao = localizacao; }
+    public IdWrapper getLocalizacao() { return localizacao; }
+    public void setLocalizacao(IdWrapper localizacao) { this.localizacao = localizacao; }
 
     public String getDataInstalacao() { return dataInstalacao; }
     public void setDataInstalacao(String dataInstalacao) { this.dataInstalacao = dataInstalacao; }
@@ -75,8 +75,8 @@ public class EquipamentoRequest {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    public String getTipoEquipamento() { return tipoEquipamento; }
-    public void setTipoEquipamento(String tipoEquipamento) { this.tipoEquipamento = tipoEquipamento; }
+    public IdWrapper getTipoEquipamento() { return tipoEquipamento; }
+    public void setTipoEquipamento(IdWrapper tipoEquipamento) { this.tipoEquipamento = tipoEquipamento; }
 
     public String getClasseFogo() { return classeFogo; }
     public void setClasseFogo(String classeFogo) { this.classeFogo = classeFogo; }
@@ -107,4 +107,15 @@ public class EquipamentoRequest {
 
     public Boolean getDisponivel() { return disponivel; }
     public void setDisponivel(Boolean disponivel) { this.disponivel = disponivel; }
+
+
+
+    public static class IdWrapper {
+        @SerializedName("id")
+        private long id;
+
+        public IdWrapper(long id) { this.id = id; }
+        public long getId() { return id; }
+        public void setId(long id) { this.id = id; }
+    }
 }

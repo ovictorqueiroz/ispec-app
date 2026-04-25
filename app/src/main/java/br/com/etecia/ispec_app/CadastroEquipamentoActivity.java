@@ -110,17 +110,19 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         EquipamentoRequest req = new EquipamentoRequest();
 
         // Campos comuns
-        req.setIdCliente(Integer.parseInt(edtIdCliente.getText().toString().trim()));
+        req.setCliente(new EquipamentoRequest.IdWrapper(Long.parseLong(edtIdCliente.getText().toString().trim())));
         req.setNome(edtNome.getText().toString().trim());
-        req.setLocalizacao(edtLocalizacao.getText().toString().trim());
+        req.setLocalizacao(new EquipamentoRequest.IdWrapper(Long.parseLong(edtLocalizacao.getText().toString().trim())));
         req.setDataInstalacao(edtDataInstalacao.getText().toString().trim());
         req.setStatus(spinnerStatus.getSelectedItem().toString());
 
-        String tipo = spinnerTipo.getSelectedItem().toString();
-        req.setTipoEquipamento(tipo);
+        String tipoStr = spinnerTipo.getSelectedItem().toString();
+        EquipamentoRequest.IdWrapper tipoWrapper = new EquipamentoRequest.IdWrapper(1);
+
+        req.setTipoEquipamento(tipoWrapper);
 
         // Campos específicos por tipo
-        switch (tipo) {
+        switch (tipoStr) {
             case "Extintor":
                 req.setClasseFogo(spinnerClasseFogo.getSelectedItem().toString());
 
@@ -170,7 +172,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
         // Desabilita o botão para evitar duplo envio
         btnCadastrar.setEnabled(false);
-
+        Log.d("testeAPICadastro", call.request().url().toString());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -256,8 +258,8 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         btnCadastrar = findViewById(R.id.btnCadastrar);
 
         // ---- Populando Spinners ----
-        String[] statusEquipamento = {"Ativo", "Inativo"};
-        String[] tipoEquipamento   = {"Alarme", "Extintor", "Hidrante"};
+        String[] statusEquipamento = {"ATIVO", "INATIVO"};
+        String[] tipoEquipamento   = {{3:"Alarme"}, {1:"Extintor"}, {2:"Hidrante"}};
         String[] tipoFogo          = {"Água - A/B/C", "Gás Carbônico - B/C", "Pó Químico - B/C",
                                       "Pó Químico - A/B/C", "Pó Químico - D",
                                       "Espuma - A/B/C", "Acetato de Potássio - K"};

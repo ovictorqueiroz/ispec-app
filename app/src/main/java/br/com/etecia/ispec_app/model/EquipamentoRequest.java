@@ -56,6 +56,8 @@ public class EquipamentoRequest {
     @SerializedName("disponivel")
     private Boolean disponivel;
 
+    private String tipo;
+
     // ----------------------------------------------------------------
     // Getters e Setters
     // ----------------------------------------------------------------
@@ -108,7 +110,13 @@ public class EquipamentoRequest {
     public Boolean getDisponivel() { return disponivel; }
     public void setDisponivel(Boolean disponivel) { this.disponivel = disponivel; }
 
+    public String getTipo() {
+        return tipo;
+    }
 
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
 
     public static class IdWrapper {
         @SerializedName("id")

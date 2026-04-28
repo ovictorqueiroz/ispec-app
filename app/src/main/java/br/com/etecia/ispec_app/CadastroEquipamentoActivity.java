@@ -37,6 +37,11 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
     // Header
     private ImageView arrowLeft;
 
+    //Campos datas
+    private String dataInstalacaoFormatada;
+    private String dataValidadeFormatada;
+    private String ultimaVerificacaoFormatada;
+
     // Campos comuns
     private EditText edtIdCliente, edtNome, edtLocalizacao, edtDataInstalacao;
     private Spinner spinnerStatus, spinnerTipo;
@@ -68,8 +73,18 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         DatePickerDialog dialog = new DatePickerDialog(
                 this,
                 (view, year, month, dayOfMonth) -> {
-                    String data = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year);
-                    campo.setText(data);
+                    String dataStandart = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth);
+                    String dataUser = String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year);
+
+                    if (campo == edtDataInstalacao) {
+                        dataInstalacaoFormatada = dataStandart;
+                    } else if (campo == edtDataValidade) {
+                        dataValidadeFormatada = dataStandart;
+                    } else if (campo == edtUltimaVerificacao) {
+                        ultimaVerificacaoFormatada = dataStandart;
+                    }
+
+                    campo.setText(dataUser);
                 },
                 hoje.getYear(), hoje.getMonthValue() - 1, hoje.getDayOfMonth()
         );
@@ -113,35 +128,39 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         req.setCliente(new EquipamentoRequest.IdWrapper(Long.parseLong(edtIdCliente.getText().toString().trim())));
         req.setNome(edtNome.getText().toString().trim());
         req.setLocalizacao(new EquipamentoRequest.IdWrapper(Long.parseLong(edtLocalizacao.getText().toString().trim())));
-        req.setDataInstalacao(edtDataInstalacao.getText().toString().trim());
+        req.setDataInstalacao(dataInstalacaoFormatada.trim());
         req.setStatus(spinnerStatus.getSelectedItem().toString());
 
         String tipoStr = spinnerTipo.getSelectedItem().toString();
-        EquipamentoRequest.IdWrapper tipoWrapper = new EquipamentoRequest.IdWrapper(1);
+        EquipamentoRequest.IdWrapper tipoWrapper;
 
-        req.setTipoEquipamento(tipoWrapper);
+        req.setTipo(tipoStr);
+
 
         // Campos específicos por tipo
         switch (tipoStr) {
             case "Extintor":
+                tipoWrapper = new EquipamentoRequest.IdWrapper(1);
                 req.setClasseFogo(spinnerClasseFogo.getSelectedItem().toString());
 
                 String capStr = edtCapacidade.getText().toString().trim();
                 if (!capStr.isEmpty()) req.setCapacidade(Double.parseDouble(capStr));
 
-                req.setDataValidade(edtDataValidade.getText().toString().trim());
+                req.setDataValidade(dataValidadeFormatada.trim());
 
                 String pressaoStr = edtPressao.getText().toString().trim();
                 if (!pressaoStr.isEmpty()) req.setPressao(Double.parseDouble(pressaoStr));
                 break;
 
             case "Alarme":
+                tipoWrapper = new EquipamentoRequest.IdWrapper(2);
                 req.setTipoSensor(spinnerTipoSensor.getSelectedItem().toString());
-                req.setUltimaVerificacao(edtUltimaVerificacao.getText().toString().trim());
+                req.setUltimaVerificacao(ultimaVerificacaoFormatada.trim());
                 req.setFuncionando(switchFuncionando.isChecked());
                 break;
 
             case "Hidrante":
+                tipoWrapper = new EquipamentoRequest.IdWrapper(3);
                 String pressaoAguaStr = edtPressaoAgua.getText().toString().trim();
                 if (!pressaoAguaStr.isEmpty()) req.setPressaoAgua(Double.parseDouble(pressaoAguaStr));
 
@@ -150,7 +169,12 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
                 req.setDisponivel(switchDisponivel.isChecked());
                 break;
+
+            default:
+                tipoWrapper = null;
+                break;
         }
+        req.setTipoEquipamento(tipoWrapper);
         Gson gson = new Gson();
         String json = gson.toJson(req);
 
@@ -307,7 +331,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         // ---- DatePickers ----
         edtDataInstalacao.setOnClickListener(v -> datePicker(edtDataInstalacao));
         edtDataValidade.setOnClickListener(v -> datePicker(edtDataValidade));
-        edtUltimaVerificacao.setOnClickListener(v -> datePicker(edtUltimaVerificacao)); // corrigido
+        edtUltimaVerificacao.setOnClickListener(v -> datePicker(edtUltimaVerificacao));
 
         // ---- Botão Cadastrar ----
         btnCadastrar.setOnClickListener(v -> cadastrarEquipamento());

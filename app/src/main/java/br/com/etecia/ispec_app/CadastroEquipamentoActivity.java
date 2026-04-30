@@ -140,7 +140,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
         // Campos específicos por tipo
         switch (tipoStr) {
-            case "Extintor":
+            case "extintor":
                 tipoWrapper = new EquipamentoRequest.IdWrapper(1);
                 req.setClasseFogo(spinnerClasseFogo.getSelectedItem().toString());
 
@@ -153,14 +153,14 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
                 if (!pressaoStr.isEmpty()) req.setPressao(Double.parseDouble(pressaoStr));
                 break;
 
-            case "Alarme":
+            case "alarme":
                 tipoWrapper = new EquipamentoRequest.IdWrapper(2);
                 req.setTipoSensor(spinnerTipoSensor.getSelectedItem().toString());
                 req.setUltimaVerificacao(ultimaVerificacaoFormatada.trim());
                 req.setFuncionando(switchFuncionando.isChecked());
                 break;
 
-            case "Hidrante":
+            case "hidrante":
                 tipoWrapper = new EquipamentoRequest.IdWrapper(3);
                 String pressaoAguaStr = edtPressaoAgua.getText().toString().trim();
                 if (!pressaoAguaStr.isEmpty()) req.setPressaoAgua(Double.parseDouble(pressaoAguaStr));
@@ -291,7 +291,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
         // ---- Populando Spinners ----
         String[] statusEquipamento = {"ATIVO", "INATIVO"};
-        String[] tipoEquipamento   = {"Alarme", "Extintor", "Hidrante"};
+        String[] tipoEquipamento   = {"alarme", "extintor", "hidrante"};
         String[] classeFogo          = {"Água - A/B/C", "Gás Carbônico - B/C", "Pó Químico - B/C",
                                       "Pó Químico - A/B/C", "Pó Químico - D",
                                       "Espuma - A/B/C", "Acetato de Potássio - K"};

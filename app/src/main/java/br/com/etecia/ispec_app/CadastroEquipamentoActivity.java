@@ -23,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 import br.com.etecia.ispec_app.model.EquipamentoRequest;
@@ -210,9 +211,16 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
                     ).show();
                     finish(); // Volta para a tela anterior
                 } else {
+                    String errorMsg = "Erro desconhecido";
+                    try {
+                        errorMsg = response.errorBody().string();
+                        Log.e("ERRO_CADASTRO", errorMsg);
+                    } catch (IOException e) {
+                        errorMsg = e.getMessage();
+                    }
                     Toast.makeText(
                             CadastroEquipamentoActivity.this,
-                            "Erro ao cadastrar: " + response.code(),
+                            "Erro ao cadastrar: " + errorMsg,
                             Toast.LENGTH_LONG
                     ).show();
                 }
@@ -283,8 +291,8 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
         // ---- Populando Spinners ----
         String[] statusEquipamento = {"ATIVO", "INATIVO"};
-        String[] tipoEquipamento   = {{3:"Alarme"}, {1:"Extintor"}, {2:"Hidrante"}};
-        String[] tipoFogo          = {"Água - A/B/C", "Gás Carbônico - B/C", "Pó Químico - B/C",
+        String[] tipoEquipamento   = {"Alarme", "Extintor", "Hidrante"};
+        String[] classeFogo          = {"Água - A/B/C", "Gás Carbônico - B/C", "Pó Químico - B/C",
                                       "Pó Químico - A/B/C", "Pó Químico - D",
                                       "Espuma - A/B/C", "Acetato de Potássio - K"};
         String[] tipoSensor        = {"Temperatura", "Movimento", "Fumaça"};
@@ -299,7 +307,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerStatus.setAdapter(adapter);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tipoFogo);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, classeFogo);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerClasseFogo.setAdapter(adapter);
 

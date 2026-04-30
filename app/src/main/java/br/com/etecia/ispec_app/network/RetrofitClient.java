@@ -7,7 +7,7 @@ public class RetrofitClient {
 
     // Troque pelo IP/URL da sua API Spring Boot
     // Em emulador Android, use 10.0.2.2 para acessar o localhost da máquina
-    private static final String BASE_URL = "http://10.67.96.99:8080/";
+    private static final String BASE_URL = "http://10.67.97.13:8080/";
 
     private static Retrofit retrofit = null;
 

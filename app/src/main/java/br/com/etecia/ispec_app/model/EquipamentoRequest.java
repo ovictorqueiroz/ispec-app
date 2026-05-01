@@ -2,6 +2,8 @@ package br.com.etecia.ispec_app.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class EquipamentoRequest {
 
     // Campos comuns
@@ -25,7 +27,10 @@ public class EquipamentoRequest {
 
     // Campos Extintor
     @SerializedName("classeFogo")
-    private String classeFogo;
+    private List<IdWrapper> classeFogo;
+
+    @SerializedName("agente")
+    private IdWrapper agente;
 
     @SerializedName("capacidade")
     private Double capacidade;
@@ -56,6 +61,7 @@ public class EquipamentoRequest {
     @SerializedName("disponivel")
     private Boolean disponivel;
 
+    @SerializedName("tipo")
     private String tipo;
 
     // ----------------------------------------------------------------
@@ -80,8 +86,8 @@ public class EquipamentoRequest {
     public IdWrapper getTipoEquipamento() { return tipoEquipamento; }
     public void setTipoEquipamento(IdWrapper tipoEquipamento) { this.tipoEquipamento = tipoEquipamento; }
 
-    public String getClasseFogo() { return classeFogo; }
-    public void setClasseFogo(String classeFogo) { this.classeFogo = classeFogo; }
+    public List<IdWrapper> getClasseFogo() { return classeFogo; }
+    public void setClasseFogo(List<IdWrapper> classeFogo) { this.classeFogo = classeFogo; }
 
     public Double getCapacidade() { return capacidade; }
     public void setCapacidade(Double capacidade) { this.capacidade = capacidade; }
@@ -116,6 +122,14 @@ public class EquipamentoRequest {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+    public IdWrapper getAgente() {
+        return agente;
+    }
+
+    public void setAgente(IdWrapper agente) {
+        this.agente = agente;
     }
 
     public static class IdWrapper {

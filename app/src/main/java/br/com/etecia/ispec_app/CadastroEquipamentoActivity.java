@@ -25,6 +25,10 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import br.com.etecia.ispec_app.model.EquipamentoRequest;
 import br.com.etecia.ispec_app.network.ApiService;
@@ -51,6 +55,8 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
     private LinearLayout camposExtintor;
     private Spinner spinnerClasseFogo;
     private EditText edtCapacidade, edtDataValidade, edtPressao;
+    private HashMap<String, Integer> agenteMap = new HashMap<>();
+    private HashMap<String, List<Integer>> classeFogoMap = new HashMap<>();
 
     // Campos Alarme
     private LinearLayout camposAlarme;
@@ -140,9 +146,17 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
         // Campos específicos por tipo
         switch (tipoStr) {
-            case "extintor":
+            case "Extintor":
                 tipoWrapper = new EquipamentoRequest.IdWrapper(1);
-                req.setClasseFogo(spinnerClasseFogo.getSelectedItem().toString());
+
+                List<Integer> ids = classeFogoMap.get(spinnerClasseFogo.getSelectedItem().toString());
+                List<EquipamentoRequest.IdWrapper> wrappers = ids.stream()
+                        .map(id -> new EquipamentoRequest.IdWrapper(id))
+                        .collect(Collectors.toList());
+                req.setClasseFogo(wrappers);
+
+                int idAgente = agenteMap.get(spinnerClasseFogo.getSelectedItem().toString());
+                req.setAgente(new EquipamentoRequest.IdWrapper(idAgente));
 
                 String capStr = edtCapacidade.getText().toString().trim();
                 if (!capStr.isEmpty()) req.setCapacidade(Double.parseDouble(capStr));
@@ -153,14 +167,14 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
                 if (!pressaoStr.isEmpty()) req.setPressao(Double.parseDouble(pressaoStr));
                 break;
 
-            case "alarme":
+            case "Alarme":
                 tipoWrapper = new EquipamentoRequest.IdWrapper(2);
                 req.setTipoSensor(spinnerTipoSensor.getSelectedItem().toString());
                 req.setUltimaVerificacao(ultimaVerificacaoFormatada.trim());
                 req.setFuncionando(switchFuncionando.isChecked());
                 break;
 
-            case "hidrante":
+            case "Hidrante":
                 tipoWrapper = new EquipamentoRequest.IdWrapper(3);
                 String pressaoAguaStr = edtPressaoAgua.getText().toString().trim();
                 if (!pressaoAguaStr.isEmpty()) req.setPressaoAgua(Double.parseDouble(pressaoAguaStr));
@@ -291,7 +305,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
         // ---- Populando Spinners ----
         String[] statusEquipamento = {"ATIVO", "INATIVO"};
-        String[] tipoEquipamento   = {"alarme", "extintor", "hidrante"};
+        String[] tipoEquipamento   = {"Alarme", "Extintor", "Hidrante"};
         String[] classeFogo          = {"Água - A/B/C", "Gás Carbônico - B/C", "Pó Químico - B/C",
                                       "Pó Químico - A/B/C", "Pó Químico - D",
                                       "Espuma - A/B/C", "Acetato de Potássio - K"};
@@ -314,6 +328,23 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tipoSensor);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTipoSensor.setAdapter(adapter);
+
+        // Populando HashMaps dos Extintores
+        agenteMap.put("Água - A/B/C", 1);
+        agenteMap.put("Gás Carbônico - B/C", 3);
+        agenteMap.put("Pó Químico - B/C", 2);
+        agenteMap.put("Pó Químico - A/B/C", 2);
+        agenteMap.put("Pó Químico - D", 2);
+        agenteMap.put("Espuma - A/B/C", 4);
+        agenteMap.put("Acetato de Potássio - K", 5);
+
+        classeFogoMap.put("Água - A/B/C", Arrays.asList(1, 2, 3));
+        classeFogoMap.put("Gás Carbônico - B/C", Arrays.asList(2, 3));
+        classeFogoMap.put("Pó Químico - B/C", Arrays.asList(2, 3));
+        classeFogoMap.put("Pó Químico - A/B/C", Arrays.asList(1, 2, 3));
+        classeFogoMap.put("Pó Químico - D", Arrays.asList(4));
+        classeFogoMap.put("Espuma - A/B/C", Arrays.asList(1, 2, 3));
+        classeFogoMap.put("Acetato de Potássio - K", Arrays.asList(5));
 
         // ---- Mostrar/esconder campos por tipo ----
         spinnerTipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

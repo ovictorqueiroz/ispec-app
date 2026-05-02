@@ -26,7 +26,7 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ClienteV
     @Override
     public void onBindViewHolder(@NonNull ClienteAdapter.ClienteViewHolder holder, int position) {
         ClienteModel cliente = listaClientes.get(position);
-        holder.tvNomeEmpresa.setText(cliente.getNomeEmpresa());
+        holder.tvNomeEmpresa.setText(cliente.getRazaoSocial());
         holder.tvEndereco.setText(cliente.getEndereco());
     }
 

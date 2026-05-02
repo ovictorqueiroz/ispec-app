@@ -86,7 +86,7 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                <!-- CAMPO: Nome -->
+                <!-- CAMPO: Nome Cliente-->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -106,8 +106,16 @@
                     android:inputType="number"
                     android:padding="12dp"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/black"
-                    />
+                    android:textColorHint="@color/black" />
+
+                <TextView
+                    android:id="@+id/txtVIdCliente"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:paddingStart="4dp"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
                 <!-- CAMPO: Nome -->
                 <TextView
@@ -146,12 +154,23 @@
                     android:id="@+id/edtLocalizacao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:background="@drawable/bg_campos"
-                    android:hint="Localização do equipamento"
-                    android:textColor="@color/white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:hint="Código de Localização"
+                    android:inputType="number"
                     android:padding="12dp"
+                    android:textColor="@color/white"
                     android:textColorHint="@color/black" />
+
+                <TextView
+                    android:id="@+id/txtLocalizacao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:paddingStart="4dp"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
                 <!-- CAMPO: Data de Instalação -->
                 <TextView

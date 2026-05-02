@@ -2,7 +2,10 @@ package br.com.etecia.ispec_app;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,7 +16,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.text.TextWatcher;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -50,6 +55,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
     // Campos comuns
     private EditText edtIdCliente, edtNome, edtLocalizacao, edtDataInstalacao;
     private Spinner spinnerStatus, spinnerTipo;
+    private TextView txtVIdCliente, txtLocalizacao;
 
     // Campos Extintor
     private LinearLayout camposExtintor;
@@ -197,6 +203,33 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
         return req;
     }
+    private void limparFormulario() {
+        // Campos comuns
+        edtIdCliente.setText("");
+        edtNome.setText("");
+        edtLocalizacao.setText("");
+        edtDataInstalacao.setText("");
+        dataInstalacaoFormatada = null;
+        spinnerStatus.setSelection(0);
+        spinnerTipo.setSelection(0);
+
+        // Campos Extintor
+        edtCapacidade.setText("");
+        edtDataValidade.setText("");
+        edtPressao.setText("");
+        dataValidadeFormatada = null;
+        spinnerClasseFogo.setSelection(0);
+
+        // Campos Alarme
+        edtUltimaVerificacao.setText("");
+        ultimaVerificacaoFormatada = null;
+        switchFuncionando.setChecked(false);
+
+        // Campos Hidrante
+        edtPressaoAgua.setText("");
+        edtCompMangueira.setText("");
+        switchDisponivel.setChecked(false);
+    }
 
     // ----------------------------------------------------------------
     // Chamada à API
@@ -223,7 +256,8 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
                             "Equipamento cadastrado com sucesso!",
                             Toast.LENGTH_SHORT
                     ).show();
-                    finish(); // Volta para a tela anterior
+                    limparFormulario();
+
                 } else {
                     String errorMsg = "Erro desconhecido";
                     try {
@@ -252,6 +286,37 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         });
     }
 
+    private void buscarCliente(Long id) {
+        txtVIdCliente.setVisibility(View.VISIBLE);
+        txtVIdCliente.setText("Buscando...");
+        txtVIdCliente.setTextColor(Color.GRAY);
+
+        ApiService api = RetrofitClient.getClient().create(ApiService.class);
+        Call<ClienteModel> call = api.buscarCliente(id);
+
+        call.enqueue(new Callback<ClienteModel>() {
+            @Override
+            public void onResponse(Call<ClienteModel> call, Response<ClienteModel> response) {
+                if (response.isSuccessful()) {
+                    txtVIdCliente.setVisibility(View.VISIBLE);
+                    txtVIdCliente.setText(response.body().getRazaoSocial());
+                    txtVIdCliente.setTextColor(Color.GREEN);
+                } else {
+                    txtVIdCliente.setVisibility(View.VISIBLE);
+                    txtVIdCliente.setText("Cliente não encontrado");
+                    txtVIdCliente.setTextColor(Color.RED);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ClienteModel> call, Throwable t) {
+                txtVIdCliente.setVisibility(View.VISIBLE);
+                txtVIdCliente.setText("Erro de conexão");
+                txtVIdCliente.setTextColor(Color.RED);
+            }
+        });
+    }
+
     // ----------------------------------------------------------------
     // onCreate
     // ----------------------------------------------------------------
@@ -275,6 +340,8 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
         // Campos comuns
         edtIdCliente = findViewById(R.id.edtIdCliente);
+        txtVIdCliente = findViewById(R.id.txtVIdCliente);
+
         edtNome = findViewById(R.id.edtNome);
         edtLocalizacao = findViewById(R.id.edtLocalizacao);
         edtDataInstalacao = findViewById(R.id.edtDataInstalacao);
@@ -302,6 +369,25 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
         // Botão
         btnCadastrar = findViewById(R.id.btnCadastrar);
+
+        edtIdCliente.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().trim().isEmpty() || !TextUtils.isDigitsOnly(s.toString())) {
+                    txtVIdCliente.setVisibility(View.GONE);
+                    return;
+                }
+                buscarCliente(Long.parseLong(s.toString()));
+            }
+        });
+
+
 
         // ---- Populando Spinners ----
         String[] statusEquipamento = {"ATIVO", "INATIVO"};

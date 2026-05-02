@@ -1,13 +1,15 @@
 package br.com.etecia.ispec_app;
+import com.google.gson.annotations.SerializedName;
 
 public class ClienteModel {
     private Long id;
-    private String nomeEmpresa;
+    @SerializedName("razaoSocial")
+    private String razaoSocial;
     private String endereco;
 
-    public ClienteModel(Long id, String nomeEmpresa, String endereco) {
+    public ClienteModel(Long id, String razaoSocial, String endereco) {
         this.id = id;
-        this.nomeEmpresa = nomeEmpresa;
+        this.razaoSocial = razaoSocial;
         this.endereco = endereco;
     }
 
@@ -15,8 +17,8 @@ public class ClienteModel {
         return id;
     }
 
-    public String getNomeEmpresa() {
-        return nomeEmpresa;
+    public String getRazaoSocial() {
+        return razaoSocial;
     }
 
     public String getEndereco() {

@@ -35,7 +35,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.com.etecia.ispec_app.model.EquipamentoRequest;
+import br.com.etecia.ispec_app.model.ClienteModel;
+import br.com.etecia.ispec_app.model.TipoSensorModel;
+import br.com.etecia.ispec_app.requests.EquipamentoRequest;
 import br.com.etecia.ispec_app.network.ApiService;
 import br.com.etecia.ispec_app.network.RetrofitClient;
 import retrofit2.Call;
@@ -63,6 +65,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
     private EditText edtCapacidade, edtDataValidade, edtPressao;
     private HashMap<String, Integer> agenteMap = new HashMap<>();
     private HashMap<String, List<Integer>> classeFogoMap = new HashMap<>();
+    private HashMap<String, TipoSensorModel> tipoSensorMap = new HashMap<>();
 
     // Campos Alarme
     private LinearLayout camposAlarme;
@@ -175,7 +178,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
             case "Alarme":
                 tipoWrapper = new EquipamentoRequest.IdWrapper(2);
-                req.setTipoSensor(spinnerTipoSensor.getSelectedItem().toString());
+                req.setTipoSensor(tipoSensorMap.get(spinnerTipoSensor.getSelectedItem().toString()));
                 req.setUltimaVerificacao(ultimaVerificacaoFormatada.trim());
                 req.setFuncionando(switchFuncionando.isChecked());
                 break;
@@ -395,7 +398,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         String[] classeFogo          = {"Água - A/B/C", "Gás Carbônico - B/C", "Pó Químico - B/C",
                                       "Pó Químico - A/B/C", "Pó Químico - D",
                                       "Espuma - A/B/C", "Acetato de Potássio - K"};
-        String[] tipoSensor        = {"Temperatura", "Movimento", "Fumaça"};
+        String[] tipoSensor        = {"Fumaça", "Temperatura", "Movimento", "Chama"};
 
         ArrayAdapter<String> adapter;
 
@@ -431,6 +434,27 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         classeFogoMap.put("Pó Químico - D", Arrays.asList(4));
         classeFogoMap.put("Espuma - A/B/C", Arrays.asList(1, 2, 3));
         classeFogoMap.put("Acetato de Potássio - K", Arrays.asList(5));
+
+        TipoSensorModel sensorFumacaOBJ = new TipoSensorModel();
+        sensorFumacaOBJ.setId(1);
+        sensorFumacaOBJ.setDescSensor("Fumaça");
+        tipoSensorMap.put("Fumaça", sensorFumacaOBJ);
+
+        TipoSensorModel sensorTempOBJ = new TipoSensorModel();
+        sensorTempOBJ.setId(2);
+        sensorTempOBJ.setDescSensor("Temperatura");
+        tipoSensorMap.put("Temperatura", sensorTempOBJ);
+
+        TipoSensorModel sensorMovOBJ = new TipoSensorModel();
+        sensorMovOBJ.setId(3);
+        sensorMovOBJ.setDescSensor("Movimento");
+        tipoSensorMap.put("Movimento", sensorMovOBJ);
+
+        TipoSensorModel sensorChaOBJ = new TipoSensorModel();
+        sensorChaOBJ.setId(4);
+        sensorChaOBJ.setDescSensor("Chama");
+        tipoSensorMap.put("Chama", sensorChaOBJ);
+
 
         // ---- Mostrar/esconder campos por tipo ----
         spinnerTipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import br.com.etecia.ispec_app.adapter.AvisoAdapter;
+import br.com.etecia.ispec_app.model.AvisoModel;
 
 public class AvisosActivity extends AppCompatActivity {
 

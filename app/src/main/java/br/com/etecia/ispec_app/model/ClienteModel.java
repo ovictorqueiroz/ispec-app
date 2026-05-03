@@ -1,4 +1,4 @@
-package br.com.etecia.ispec_app;
+package br.com.etecia.ispec_app.model;
 import com.google.gson.annotations.SerializedName;
 
 public class ClienteModel {

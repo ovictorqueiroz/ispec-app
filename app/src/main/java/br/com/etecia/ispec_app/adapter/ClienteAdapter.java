@@ -1,4 +1,4 @@
-package br.com.etecia.ispec_app;
+package br.com.etecia.ispec_app.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import br.com.etecia.ispec_app.R;
+import br.com.etecia.ispec_app.model.ClienteModel;
 
 public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ClienteViewHolder> {
     private List<ClienteModel> listaClientes;

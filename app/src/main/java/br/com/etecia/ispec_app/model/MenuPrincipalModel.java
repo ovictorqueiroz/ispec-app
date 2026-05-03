@@ -1,4 +1,4 @@
-package br.com.etecia.ispec_app;
+package br.com.etecia.ispec_app.model;
 
 public class MenuPrincipalModel {
 

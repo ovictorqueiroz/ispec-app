@@ -1,8 +1,10 @@
-package br.com.etecia.ispec_app.model;
+package br.com.etecia.ispec_app.requests;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+
+import br.com.etecia.ispec_app.model.TipoSensorModel;
 
 public class EquipamentoRequest {
 
@@ -43,7 +45,7 @@ public class EquipamentoRequest {
 
     // Campos Alarme
     @SerializedName("tipoSensor")
-    private String tipoSensor;
+    private TipoSensorModel tipoSensor;
 
     @SerializedName("ultimaVerificacao")
     private String ultimaVerificacao; // formato: dd/MM/yyyy
@@ -98,8 +100,8 @@ public class EquipamentoRequest {
     public Double getPressao() { return pressao; }
     public void setPressao(Double pressao) { this.pressao = pressao; }
 
-    public String getTipoSensor() { return tipoSensor; }
-    public void setTipoSensor(String tipoSensor) { this.tipoSensor = tipoSensor; }
+    public TipoSensorModel getTipoSensor() { return tipoSensor; }
+    public void setTipoSensor(TipoSensorModel tipoSensor) { this.tipoSensor = tipoSensor; }
 
     public String getUltimaVerificacao() { return ultimaVerificacao; }
     public void setUltimaVerificacao(String ultimaVerificacao) { this.ultimaVerificacao = ultimaVerificacao; }

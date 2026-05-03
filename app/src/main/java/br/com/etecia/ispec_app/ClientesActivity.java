@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.etecia.ispec_app.adapter.ClienteAdapter;
+import br.com.etecia.ispec_app.model.ClienteModel;
+
 public class ClientesActivity extends AppCompatActivity {
     private ImageView arrowLeft;
 

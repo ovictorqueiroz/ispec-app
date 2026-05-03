@@ -1,4 +1,6 @@
-package br.com.etecia.ispec_app;
+package br.com.etecia.ispec_app.model;
+
+import br.com.etecia.ispec_app.interfaces.SerializedName;
 
 public class
 ExtintorModel extends EquipamentoModel {

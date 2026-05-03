@@ -1,7 +1,7 @@
 package br.com.etecia.ispec_app.network;
 
-import br.com.etecia.ispec_app.ClienteModel;
-import br.com.etecia.ispec_app.model.EquipamentoRequest;
+import br.com.etecia.ispec_app.model.ClienteModel;
+import br.com.etecia.ispec_app.requests.EquipamentoRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

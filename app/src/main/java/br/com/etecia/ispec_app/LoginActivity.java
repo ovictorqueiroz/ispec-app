@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,12 +18,29 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.IOException;
+
+import br.com.etecia.ispec_app.network.ApiService;
+import br.com.etecia.ispec_app.network.RetrofitClient;
+import br.com.etecia.ispec_app.requests.LoginRequest;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LoginActivity extends AppCompatActivity {
 
     TextView txtRecupera;
     TextInputEditText txtEmail, txtSenha;
     MaterialButton btnEntrar;
     boolean termosAceitos = false;
+
+    private LoginRequest montarRequest(){
+        LoginRequest req = new LoginRequest();
+
+        req.setEmail(txtEmail.getText().toString().trim());
+        req.setSenha(txtSenha.getText().toString().trim());
+        return req;
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +85,49 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),
                             "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show();
                 } else {
-                    startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
-                    finish();
+                    LoginRequest request = montarRequest();
+                    ApiService api = RetrofitClient.getClient().create(ApiService.class);
+                    Call<String> call = api.autenticaUsuario(request);
+
+                    call.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(
+                                        LoginActivity.this,
+                                        "Usuário autenticado com sucesso!",
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                                startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+                                finish();
+                            }
+
+                            else{
+                                String errorMsg = "Erro desconhecido";
+                                try {
+                                    errorMsg = response.errorBody().string();
+                                    Log.e("ERRO_AUTH", errorMsg);
+                                } catch (IOException e) {
+                                    errorMsg = e.getMessage();
+                                }
+                                Toast.makeText(
+                                LoginActivity.this,
+                                "Erro ao Autenticar: " + errorMsg,
+                                Toast.LENGTH_LONG
+                                ).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Toast.makeText(
+                                    LoginActivity.this,
+                                    "Falha na conexão: " + t.getMessage(),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                    });
+
                 }
             }
         });

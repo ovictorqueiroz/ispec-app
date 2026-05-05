@@ -2,6 +2,7 @@ package br.com.etecia.ispec_app.network;
 
 import br.com.etecia.ispec_app.model.ClienteModel;
 import br.com.etecia.ispec_app.requests.EquipamentoRequest;
+import br.com.etecia.ispec_app.requests.LoginRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -21,4 +22,8 @@ public interface ApiService {
 
     @GET("clientes/{id}")
     Call<ClienteModel> buscarCliente(@Path("id") Long id);
+
+    @POST("auth/login")
+    Call<String> autenticaUsuario(@Body LoginRequest request);
+
 }

@@ -120,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<String> call, Throwable t) {
+                            Log.e("ERRO_CONEXAO", "Falha na conexão", t);
                             Toast.makeText(
                                     LoginActivity.this,
                                     "Falha na conexão: " + t.getMessage(),

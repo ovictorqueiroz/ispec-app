@@ -1,4 +1,6 @@
-package br.com.etecia.ispec_app.network;
+package br.com.etecia.ispec_app.service;
+
+import java.util.List;
 
 import br.com.etecia.ispec_app.model.ClienteModel;
 import br.com.etecia.ispec_app.requests.EquipamentoRequest;
@@ -22,6 +24,9 @@ public interface ApiService {
 
     @GET("clientes/{id}")
     Call<ClienteModel> buscarCliente(@Path("id") Long id);
+
+    @GET("clientes/")
+    Call<List<ClienteModel>> listarClientes();
 
     @POST("auth/login")
     Call<String> autenticaUsuario(@Body LoginRequest request);

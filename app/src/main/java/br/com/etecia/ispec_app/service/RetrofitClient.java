@@ -1,4 +1,4 @@
-package br.com.etecia.ispec_app.network;
+package br.com.etecia.ispec_app.service;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

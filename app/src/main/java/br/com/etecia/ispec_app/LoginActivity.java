@@ -20,8 +20,8 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
 
-import br.com.etecia.ispec_app.network.ApiService;
-import br.com.etecia.ispec_app.network.RetrofitClient;
+import br.com.etecia.ispec_app.service.ApiService;
+import br.com.etecia.ispec_app.service.RetrofitClient;
 import br.com.etecia.ispec_app.requests.LoginRequest;
 import retrofit2.Call;
 import retrofit2.Callback;

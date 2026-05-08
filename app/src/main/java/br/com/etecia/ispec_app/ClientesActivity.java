@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,9 +19,12 @@ import java.util.List;
 
 import br.com.etecia.ispec_app.adapter.ClienteAdapter;
 import br.com.etecia.ispec_app.model.ClienteModel;
+import br.com.etecia.ispec_app.viewmodel.ClienteViewModel;
 
 public class ClientesActivity extends AppCompatActivity {
     private ImageView arrowLeft;
+    private ClienteViewModel viewModel;
+
 
 
     @Override
@@ -46,12 +50,13 @@ public class ClientesActivity extends AppCompatActivity {
 
         rvClientes.setLayoutManager(new LinearLayoutManager(this));
 
-        List<ClienteModel> listaClientes = new ArrayList<>();
-        listaClientes.add(new ClienteModel(1L, "Etec Irmã Agostina", "Av. Feliciano Coreia, s/n - SP"));
-        listaClientes.add(new ClienteModel(2L, "Alvaro Mercado", "Av. Feliciano Coreia, 380 - SP"));
-        listaClientes.add(new ClienteModel(3L, "Posto Serrano", "Av. Belmira Marin, 380 - SP"));
-
-        ClienteAdapter adapter = new ClienteAdapter(listaClientes);
+        ClienteAdapter adapter = new ClienteAdapter(new ArrayList<>());
         rvClientes.setAdapter(adapter);
+        viewModel = new ViewModelProvider(this).get(ClienteViewModel .class);
+        viewModel.buscarClientes();
+        viewModel.getClientes().observe(this, clientes -> {
+            adapter.atualizarLista(clientes);
+        });
+
     }
 }

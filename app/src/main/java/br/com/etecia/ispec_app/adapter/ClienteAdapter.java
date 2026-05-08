@@ -47,4 +47,9 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ClienteV
             tvEndereco =itemView.findViewById(R.id.tvEndereco);
         }
     }
+
+    public void atualizarLista(List<ClienteModel> novaLista) {
+        this.listaClientes = novaLista;
+        notifyDataSetChanged();
+    }
 }

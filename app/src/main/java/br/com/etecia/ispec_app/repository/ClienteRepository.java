@@ -23,7 +23,7 @@ public class ClienteRepository {
             @Override
             public void onResponse(Call<List<ClienteModel>> call, Response<List<ClienteModel>> response) {
                 if (response.isSuccessful()){
-                 callback.onSucesso(response.body());
+                 callback.onSucesso(response.body()); // Solicita na API e joga o resultado pro callback
                 }
                 else {
                     callback.onErro(response.message());

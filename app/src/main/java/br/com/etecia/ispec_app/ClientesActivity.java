@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,8 @@ import br.com.etecia.ispec_app.viewmodel.ClienteViewModel;
 public class ClientesActivity extends AppCompatActivity {
     private ImageView arrowLeft;
     private ClienteViewModel viewModel;
+
+    private SwipeRefreshLayout swpRefresh;
 
 
 
@@ -45,6 +48,7 @@ public class ClientesActivity extends AppCompatActivity {
                 finish();
             }
         });
+        swpRefresh = findViewById(R.id.swpRefresh);
 
         RecyclerView rvClientes = findViewById(R.id.rvClientes);
 
@@ -53,7 +57,17 @@ public class ClientesActivity extends AppCompatActivity {
         ClienteAdapter adapter = new ClienteAdapter(new ArrayList<>());
         rvClientes.setAdapter(adapter);
         viewModel = new ViewModelProvider(this).get(ClienteViewModel .class);
-        viewModel.buscarClientes();
+
+
+        swpRefresh.setOnRefreshListener( new SwipeRefreshLayout.OnRefreshListener(){
+
+        @Override
+        public void onRefresh() {
+            viewModel.buscarClientes();
+        }}
+        );
+
+
         viewModel.getClientes().observe(this, clientes -> {
             adapter.atualizarLista(clientes);
         });

@@ -3,6 +3,7 @@ package br.com.etecia.ispec_app;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,13 +35,15 @@ public class LoginActivity extends AppCompatActivity {
     MaterialButton btnEntrar;
     boolean termosAceitos = false;
 
-    private LoginRequest montarRequest(){
+    private LoginRequest montarRequest() {
         LoginRequest req = new LoginRequest();
 
         req.setEmail(txtEmail.getText().toString().trim());
         req.setSenha(txtSenha.getText().toString().trim());
         return req;
-    };
+    }
+
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         txtSenha = findViewById(R.id.txtSenha);
         btnEntrar = findViewById(R.id.btnEntrar);
 
-        txtRecupera.setOnClickListener(new View.OnClickListener(){
+        txtRecupera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), RecSenhaActivity.class));
@@ -72,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(!termosAceitos){
+                if (!termosAceitos) {
                     Toast.makeText(getApplicationContext(),
                             "Você precisa aceitar os Termos de Uso para continuar.", Toast.LENGTH_SHORT).show();
                     return;
@@ -81,12 +84,12 @@ public class LoginActivity extends AppCompatActivity {
                 String email = txtEmail.getText().toString().trim();
                 String senha = txtSenha.getText().toString().trim();
 
-                if(email.isEmpty() || senha.isEmpty()){
+                if (email.isEmpty() || senha.isEmpty()) {
                     Toast.makeText(getApplicationContext(),
                             "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show();
                 } else {
                     LoginRequest request = montarRequest();
-                    ApiService api = RetrofitClient.getClient().create(ApiService.class);
+                    ApiService api = RetrofitClient.getClient(getApplicationContext()).create(ApiService.class);
                     Call<String> call = api.autenticaUsuario(request);
 
                     call.enqueue(new Callback<String>() {
@@ -98,11 +101,21 @@ public class LoginActivity extends AppCompatActivity {
                                         "Usuário autenticado com sucesso!",
                                         Toast.LENGTH_SHORT
                                 ).show();
+                                // Pega o token que a API retornou
+                                String token = response.body();
+
+                                // Abre o SharedPreferences com o nome "sessao"
+                                SharedPreferences prefs = getSharedPreferences("sessao", MODE_PRIVATE);
+
+                                // Cria um editor para escrever
+                                SharedPreferences.Editor editor = prefs.edit();
+
+                                // Salva o token com a chave "token"
+                                editor.putString("token", token);
+                                editor.apply(); // Salva de forma assíncrona
                                 startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
                                 finish();
-                            }
-
-                            else{
+                            } else {
                                 String errorMsg = "Erro desconhecido";
                                 try {
                                     errorMsg = response.errorBody().string();
@@ -111,9 +124,9 @@ public class LoginActivity extends AppCompatActivity {
                                     errorMsg = e.getMessage();
                                 }
                                 Toast.makeText(
-                                LoginActivity.this,
-                                "Erro ao Autenticar: " + errorMsg,
-                                Toast.LENGTH_LONG
+                                        LoginActivity.this,
+                                        "Erro ao Autenticar: " + errorMsg,
+                                        Toast.LENGTH_LONG
                                 ).show();
                             }
                         }
@@ -134,6 +147,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
     private void showTermsOfUseDialog() {
         String termos = "Termos de Uso da iSpec\n\n" +
                 "Este aplicativo coleta dados de cadastro e localização do usuário para inspeção de produtos de incêndio.\n\n" +

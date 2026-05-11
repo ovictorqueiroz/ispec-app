@@ -242,7 +242,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
         EquipamentoRequest request = montarRequest();
 
-        ApiService api = RetrofitClient.getClient().create(ApiService.class);
+        ApiService api = RetrofitClient.getClient(getApplicationContext()).create(ApiService.class);
         Call<Void> call = api.cadastrarEquipamento(request);
 
         // Desabilita o botão para evitar duplo envio
@@ -294,7 +294,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         txtVIdCliente.setText("Buscando...");
         txtVIdCliente.setTextColor(Color.GRAY);
 
-        ApiService api = RetrofitClient.getClient().create(ApiService.class);
+        ApiService api = RetrofitClient.getClient(getApplicationContext()).create(ApiService.class);
         Call<ClienteModel> call = api.buscarCliente(id);
 
         call.enqueue(new Callback<ClienteModel>() {

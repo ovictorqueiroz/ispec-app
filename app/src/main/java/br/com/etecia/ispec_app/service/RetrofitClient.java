@@ -26,7 +26,7 @@ public class RetrofitClient {
                         // Lê o token salvo no SharedPreferences
                         SharedPreferences prefs = context.getSharedPreferences("sessao", Context.MODE_PRIVATE);
                         String token = prefs.getString("token", "");
-                        Log.d("INTERCEPTOR", "Token lido: " + token); // ← adiciona essa linha
+                        Log.d("INTERCEPTOR", "Token lido: " + token);
 
                         // Pega a requisição original e adiciona o header
                         Request request = chain.request().newBuilder()

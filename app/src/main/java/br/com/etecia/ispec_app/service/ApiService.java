@@ -25,7 +25,7 @@ public interface ApiService {
     @GET("clientes/{id}")
     Call<ClienteModel> buscarCliente(@Path("id") Long id);
 
-    @GET("clientes/")
+    @GET("clientes")
     Call<List<ClienteModel>> listarClientes();
 
     @POST("auth/login")

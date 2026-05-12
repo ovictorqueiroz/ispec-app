@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.etecia.ispec_app.R;
@@ -15,10 +16,13 @@ import br.com.etecia.ispec_app.model.ClienteModel;
 
 public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ClienteViewHolder> {
     private List<ClienteModel> listaClientes;
+    private List<ClienteModel> listaFiltrada;
 
     public ClienteAdapter(List<ClienteModel> listaClientes){
-        this.listaClientes = listaClientes;
+        this.listaClientes = new ArrayList<>(listaClientes);
+        this.listaFiltrada = new ArrayList<>(listaClientes);
     }
+
     @NonNull
     @Override
     public ClienteAdapter.ClienteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -28,14 +32,14 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ClienteV
 
     @Override
     public void onBindViewHolder(@NonNull ClienteAdapter.ClienteViewHolder holder, int position) {
-        ClienteModel cliente = listaClientes.get(position);
+        ClienteModel cliente = listaFiltrada.get(position);
         holder.tvNomeEmpresa.setText(cliente.getRazaoSocial());
         holder.tvEndereco.setText(cliente.getEndereco());
     }
 
     @Override
     public int getItemCount() {
-        return listaClientes.size();
+        return listaFiltrada.size();
     }
 
     public  static  class ClienteViewHolder extends RecyclerView.ViewHolder{
@@ -50,6 +54,22 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ClienteV
 
     public void atualizarLista(List<ClienteModel> novaLista) {
         this.listaClientes = novaLista;
+        this.listaFiltrada = new ArrayList<>(novaLista);
+        notifyDataSetChanged();
+    }
+
+    public void filtrar(String texto) {
+        listaFiltrada.clear();
+        if (texto.isEmpty()) {
+            listaFiltrada.addAll(listaClientes);
+        } else {
+            String textoBusca = texto.toLowerCase().trim();
+            for (ClienteModel cliente : listaClientes) {
+                if (cliente.getRazaoSocial().toLowerCase().contains(textoBusca)) {
+                    listaFiltrada.add(cliente);
+                }
+            }
+        }
         notifyDataSetChanged();
     }
 }

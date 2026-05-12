@@ -2,6 +2,8 @@ package br.com.etecia.ispec_app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -14,6 +16,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.search.SearchBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,7 @@ public class ClientesActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout swpRefresh;
 
+    private SearchBar search_bar;
 
 
     @Override
@@ -48,7 +53,9 @@ public class ClientesActivity extends AppCompatActivity {
                 finish();
             }
         });
-        swpRefresh = findViewById(R.id.swpRefresh);
+
+
+
 
         RecyclerView rvClientes = findViewById(R.id.rvClientes);
 
@@ -59,6 +66,10 @@ public class ClientesActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(ClienteViewModel .class);
 
 
+        viewModel.buscarClientes(); //chama os clientes da API
+
+        //Atualiza a página
+        swpRefresh = findViewById(R.id.swpRefresh);
         swpRefresh.setOnRefreshListener( new SwipeRefreshLayout.OnRefreshListener(){
 
         @Override
@@ -68,8 +79,28 @@ public class ClientesActivity extends AppCompatActivity {
         );
 
 
+
         viewModel.getClientes().observe(this, clientes -> {
             adapter.atualizarLista(clientes);
+            swpRefresh.setRefreshing(false);
+        });
+
+
+        //Busca os clientes na barra de pesquisa
+        search_bar =findViewById(R.id.search_bar);
+        String txtPesquisa = search_bar.getText().toString().trim()
+                ;
+        search_bar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.filtrar(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
 
     }

@@ -30,13 +30,15 @@
                 android:src="@drawable/ic_arrow_left" />
 
             <!-- SEARCH BAR -->
-            <com.google.android.material.search.SearchBar
+            <EditText
                 android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
+                android:background="@drawable/bg_campos_white"
                 android:elevation="8dp"
-                android:hint="Pesquisar" />
+                android:hint="Pesquisar"
+
+                android:padding="10dp" />
 
         </LinearLayout>
 

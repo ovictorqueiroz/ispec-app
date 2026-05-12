@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -32,7 +33,7 @@ public class ClientesActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout swpRefresh;
 
-    private SearchBar search_bar;
+    private EditText search_bar;
 
 
     @Override
@@ -88,8 +89,8 @@ public class ClientesActivity extends AppCompatActivity {
 
         //Busca os clientes na barra de pesquisa
         search_bar =findViewById(R.id.search_bar);
-        String txtPesquisa = search_bar.getText().toString().trim()
-                ;
+
+
         search_bar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}

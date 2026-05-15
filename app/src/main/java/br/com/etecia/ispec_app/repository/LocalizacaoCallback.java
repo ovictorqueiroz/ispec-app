@@ -6,6 +6,6 @@ import br.com.etecia.ispec_app.model.ClienteModel;
 import br.com.etecia.ispec_app.model.LocalizacaoModel;
 
 public interface LocalizacaoCallback {
-    void onSucesso(List<LocalizacaoModel> localizacao);
+    void onSucesso(LocalizacaoModel localizacao);
     void onErro(String mensagem);
 }

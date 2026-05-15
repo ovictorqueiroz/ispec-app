@@ -187,7 +187,8 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
             case "Hidrante":
                 tipoWrapper = new EquipamentoRequest.IdWrapper(3);
                 String pressaoAguaStr = edtPressaoAgua.getText().toString().trim();
-                if (!pressaoAguaStr.isEmpty()) req.setPressaoAgua(Double.parseDouble(pressaoAguaStr));
+                if (!pressaoAguaStr.isEmpty())
+                    req.setPressaoAgua(Double.parseDouble(pressaoAguaStr));
 
                 String compStr = edtCompMangueira.getText().toString().trim();
                 if (!compStr.isEmpty()) req.setComprimentoMangueira(Double.parseDouble(compStr));
@@ -207,6 +208,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
         return req;
     }
+
     private void limparFormulario() {
         // Campos comuns
         edtIdCliente.setText("");
@@ -293,7 +295,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
     private void buscarCliente(Long id) {
         txtVIdCliente.setVisibility(View.VISIBLE);
         txtVIdCliente.setText("Buscando...");
-        txtVIdCliente.setTextColor(Color.rgb(179,177,177));
+        txtVIdCliente.setTextColor(Color.rgb(179, 177, 177));
 
         ApiService api = RetrofitClient.getClient(getApplicationContext()).create(ApiService.class);
         Call<ClienteModel> call = api.buscarCliente(id);
@@ -304,7 +306,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     txtVIdCliente.setVisibility(View.VISIBLE);
                     txtVIdCliente.setText(response.body().getRazaoSocial());
-                    txtVIdCliente.setTextColor(Color.rgb(178,213,121));
+                    txtVIdCliente.setTextColor(Color.rgb(178, 213, 121));
                 } else {
                     txtVIdCliente.setVisibility(View.VISIBLE);
                     txtVIdCliente.setText("Cliente não encontrado");
@@ -321,13 +323,42 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         });
     }
 
-    private void buscarLocalizacao(long id){
+    private void buscarLocalizacao(long id) {
         txtLocalizacao.setVisibility(View.VISIBLE);
         txtLocalizacao.setText("Buscando...");
-        txtLocalizacao.setTextColor(Color.rgb(179,177,177));
+        txtLocalizacao.setTextColor(Color.rgb(179, 177, 177));
 
         ApiService api = RetrofitClient.getClient(getApplicationContext()).create(ApiService.class);
         Call<LocalizacaoModel> call = api.buscarLocalizacao(id);
+
+        call.enqueue(new Callback<LocalizacaoModel>() {
+
+
+            @Override
+            public void onResponse(Call<LocalizacaoModel> call, Response<LocalizacaoModel> response) {
+                if (response.isSuccessful()) {
+                    String texto = String.format("Bloco: %s | Andar: %s | Sala: %s",
+                            response.body().getBloco(),
+                            response.body().getAndar(),
+                            response.body().getSala());
+
+                    txtVIdCliente.setVisibility(View.VISIBLE);
+                    txtVIdCliente.setText(texto);
+                    txtVIdCliente.setTextColor(Color.rgb(178, 213, 121));
+                } else {
+                    txtVIdCliente.setVisibility(View.VISIBLE);
+                    txtVIdCliente.setText("Localização não encontrada");
+                    txtVIdCliente.setTextColor(Color.rgb(163, 29, 29));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LocalizacaoModel> call, Throwable t) {
+                txtVIdCliente.setVisibility(View.VISIBLE);
+                txtVIdCliente.setText("Erro de conexão");
+                txtVIdCliente.setTextColor(Color.rgb(163, 29, 29));
+            }
+        });
     }
 
     // ----------------------------------------------------------------
@@ -385,10 +416,12 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
 
         edtIdCliente.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -401,14 +434,13 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         });
 
 
-
         // ---- Populando Spinners ----
         String[] statusEquipamento = {"ATIVO", "INATIVO"};
-        String[] tipoEquipamento   = {"Alarme", "Extintor", "Hidrante"};
-        String[] classeFogo          = {"Água - A/B/C", "Gás Carbônico - B/C", "Pó Químico - B/C",
-                                      "Pó Químico - A/B/C", "Pó Químico - D",
-                                      "Espuma - A/B/C", "Acetato de Potássio - K"};
-        String[] tipoSensor        = {"Fumaça", "Temperatura", "Movimento", "Chama"};
+        String[] tipoEquipamento = {"Alarme", "Extintor", "Hidrante"};
+        String[] classeFogo = {"Água - A/B/C", "Gás Carbônico - B/C", "Pó Químico - B/C",
+                "Pó Químico - A/B/C", "Pó Químico - D",
+                "Espuma - A/B/C", "Acetato de Potássio - K"};
+        String[] tipoSensor = {"Fumaça", "Temperatura", "Movimento", "Chama"};
 
         ArrayAdapter<String> adapter;
 
@@ -474,11 +506,18 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
                 camposExtintor.setVisibility(View.GONE);
                 camposHidrante.setVisibility(View.GONE);
                 switch (position) {
-                    case 0: camposAlarme.setVisibility(View.VISIBLE); break;
-                    case 1: camposExtintor.setVisibility(View.VISIBLE); break;
-                    case 2: camposHidrante.setVisibility(View.VISIBLE); break;
+                    case 0:
+                        camposAlarme.setVisibility(View.VISIBLE);
+                        break;
+                    case 1:
+                        camposExtintor.setVisibility(View.VISIBLE);
+                        break;
+                    case 2:
+                        camposHidrante.setVisibility(View.VISIBLE);
+                        break;
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 camposAlarme.setVisibility(View.GONE);

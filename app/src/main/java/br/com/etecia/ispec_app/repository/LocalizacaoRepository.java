@@ -2,9 +2,6 @@ package br.com.etecia.ispec_app.repository;
 
 import android.content.Context;
 import android.util.Log;
-
-import java.util.List;
-
 import br.com.etecia.ispec_app.model.LocalizacaoModel;
 import br.com.etecia.ispec_app.service.ApiService;
 import br.com.etecia.ispec_app.service.RetrofitClient;
@@ -19,14 +16,15 @@ public class LocalizacaoRepository {
         localizacaoApiService = RetrofitClient.getClient(context.getApplicationContext()).create(ApiService.class);
     }
 
-    public void buscarLocalizacao(LocalizacaoCallback callback){
-        Call<List<LocalizacaoModel>> call = localizacaoApiService.buscarLocalizacao();
+    public void buscarLocalizacao(LocalizacaoCallback callback, Long id){
+        Call<LocalizacaoModel> call = localizacaoApiService.buscarLocalizacao(id);
 
-        call.enqueue(new Callback<List<LocalizacaoModel>>() {
+        call.enqueue(new Callback<LocalizacaoModel>() {
             @Override
-            public void onResponse(Call<List<LocalizacaoModel>> call, Response<List<LocalizacaoModel>> response) {
+            public void onResponse(Call<LocalizacaoModel> call, Response<LocalizacaoModel> response) {
                 if (response.isSuccessful()){
-                 callback.onSucesso(response.body()); // Solicita na API e joga o resultado pro callback
+                 callback.onSucesso(response.body()); // Porque esse response está esperando uma lista?
+
                 }
                 else {
                     Log.e("RETROFIT_ERRO", "Código: " + response.code() + " | Mensagem: " + response.message());
@@ -40,7 +38,7 @@ public class LocalizacaoRepository {
             }
 
             @Override
-            public void onFailure(Call<List<LocalizacaoModel>> call, Throwable t) {
+            public void onFailure(Call<LocalizacaoModel> call, Throwable t) {
                 callback.onErro(t.getMessage());
             }
         });

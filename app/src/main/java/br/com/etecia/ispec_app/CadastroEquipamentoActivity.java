@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.etecia.ispec_app.model.ClienteModel;
+import br.com.etecia.ispec_app.model.LocalizacaoModel;
 import br.com.etecia.ispec_app.model.TipoSensorModel;
 import br.com.etecia.ispec_app.requests.EquipamentoRequest;
 import br.com.etecia.ispec_app.service.ApiService;
@@ -318,6 +319,15 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
                 txtVIdCliente.setTextColor(Color.rgb(163, 29, 29));
             }
         });
+    }
+
+    private void buscarLocalizacao(long id){
+        txtLocalizacao.setVisibility(View.VISIBLE);
+        txtLocalizacao.setText("Buscando...");
+        txtLocalizacao.setTextColor(Color.rgb(179,177,177));
+
+        ApiService api = RetrofitClient.getClient(getApplicationContext()).create(ApiService.class);
+        Call<LocalizacaoModel> call = api.buscarLocalizacao(id);
     }
 
     // ----------------------------------------------------------------

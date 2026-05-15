@@ -292,7 +292,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
     private void buscarCliente(Long id) {
         txtVIdCliente.setVisibility(View.VISIBLE);
         txtVIdCliente.setText("Buscando...");
-        txtVIdCliente.setTextColor(Color.GRAY);
+        txtVIdCliente.setTextColor(Color.rgb(179,177,177));
 
         ApiService api = RetrofitClient.getClient(getApplicationContext()).create(ApiService.class);
         Call<ClienteModel> call = api.buscarCliente(id);
@@ -303,11 +303,11 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     txtVIdCliente.setVisibility(View.VISIBLE);
                     txtVIdCliente.setText(response.body().getRazaoSocial());
-                    txtVIdCliente.setTextColor(Color.GREEN);
+                    txtVIdCliente.setTextColor(Color.rgb(178,213,121));
                 } else {
                     txtVIdCliente.setVisibility(View.VISIBLE);
                     txtVIdCliente.setText("Cliente não encontrado");
-                    txtVIdCliente.setTextColor(Color.RED);
+                    txtVIdCliente.setTextColor(Color.rgb(163, 29, 29));
                 }
             }
 
@@ -315,7 +315,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
             public void onFailure(Call<ClienteModel> call, Throwable t) {
                 txtVIdCliente.setVisibility(View.VISIBLE);
                 txtVIdCliente.setText("Erro de conexão");
-                txtVIdCliente.setTextColor(Color.RED);
+                txtVIdCliente.setTextColor(Color.rgb(163, 29, 29));
             }
         });
     }

@@ -18,7 +18,7 @@ public interface ApiService {
     @GET("clientes/{id}")
     Call<ClienteModel> buscarCliente(@Path("id") Long id);
 
-    @GET("localizacao/{id}")
+    @GET("localizacoes/{id}")
     Call<LocalizacaoModel> buscarLocalizacao(@Path("id") Long id);
 
     @GET("clientes")

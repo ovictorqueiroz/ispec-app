@@ -308,7 +308,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     txtVIdCliente.setVisibility(View.VISIBLE);
                     txtVIdCliente.setText(response.body().getRazaoSocial());
-                    txtVIdCliente.setTextColor(Color.rgb(178, 213, 121));
+                    txtVIdCliente.setTextColor(Color.rgb(125, 149, 85));
                 } else {
                     txtVIdCliente.setVisibility(View.VISIBLE);
                     txtVIdCliente.setText("Cliente não encontrado");
@@ -335,14 +335,14 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         repository.buscarLocalizacao(new LocalizacaoCallback() {
             @Override
             public void onSucesso(LocalizacaoModel localizacao) {
-                String texto = String.format("Bloco: %s | Andar: %s | Sala: %s",
+                String texto = String.format("%s | %s | %s",
                         localizacao.getBloco(),
                         localizacao.getAndar(),
                         localizacao.getSala());
 
                 txtLocalizacao.setVisibility(View.VISIBLE);
                 txtLocalizacao.setText(texto);
-                txtLocalizacao.setTextColor(Color.rgb(178, 213, 121));
+                txtLocalizacao.setTextColor(Color.rgb(127, 149, 85));
             }
 
             @Override

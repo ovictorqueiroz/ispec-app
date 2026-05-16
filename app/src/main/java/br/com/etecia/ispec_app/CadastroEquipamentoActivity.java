@@ -38,6 +38,8 @@ import java.util.stream.Collectors;
 import br.com.etecia.ispec_app.model.ClienteModel;
 import br.com.etecia.ispec_app.model.LocalizacaoModel;
 import br.com.etecia.ispec_app.model.TipoSensorModel;
+import br.com.etecia.ispec_app.repository.LocalizacaoCallback;
+import br.com.etecia.ispec_app.repository.LocalizacaoRepository;
 import br.com.etecia.ispec_app.requests.EquipamentoRequest;
 import br.com.etecia.ispec_app.service.ApiService;
 import br.com.etecia.ispec_app.service.RetrofitClient;
@@ -328,37 +330,28 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         txtLocalizacao.setText("Buscando...");
         txtLocalizacao.setTextColor(Color.rgb(179, 177, 177));
 
-        ApiService api = RetrofitClient.getClient(getApplicationContext()).create(ApiService.class);
-        Call<LocalizacaoModel> call = api.buscarLocalizacao(id);
+        LocalizacaoRepository repository = new LocalizacaoRepository(getApplicationContext());
 
-        call.enqueue(new Callback<LocalizacaoModel>() {
-
-
+        repository.buscarLocalizacao(new LocalizacaoCallback() {
             @Override
-            public void onResponse(Call<LocalizacaoModel> call, Response<LocalizacaoModel> response) {
-                if (response.isSuccessful()) {
-                    String texto = String.format("Bloco: %s | Andar: %s | Sala: %s",
-                            response.body().getBloco(),
-                            response.body().getAndar(),
-                            response.body().getSala());
+            public void onSucesso(LocalizacaoModel localizacao) {
+                String texto = String.format("Bloco: %s | Andar: %s | Sala: %s",
+                        localizacao.getBloco(),
+                        localizacao.getAndar(),
+                        localizacao.getSala());
 
-                    txtVIdCliente.setVisibility(View.VISIBLE);
-                    txtVIdCliente.setText(texto);
-                    txtVIdCliente.setTextColor(Color.rgb(178, 213, 121));
-                } else {
-                    txtVIdCliente.setVisibility(View.VISIBLE);
-                    txtVIdCliente.setText("Localização não encontrada");
-                    txtVIdCliente.setTextColor(Color.rgb(163, 29, 29));
-                }
+                txtLocalizacao.setVisibility(View.VISIBLE);
+                txtLocalizacao.setText(texto);
+                txtLocalizacao.setTextColor(Color.rgb(178, 213, 121));
             }
 
             @Override
-            public void onFailure(Call<LocalizacaoModel> call, Throwable t) {
-                txtVIdCliente.setVisibility(View.VISIBLE);
-                txtVIdCliente.setText("Erro de conexão");
-                txtVIdCliente.setTextColor(Color.rgb(163, 29, 29));
+            public void onErro(String mensagem) {
+                txtLocalizacao.setVisibility(View.VISIBLE);
+                txtLocalizacao.setText("Localização não encontrada");
+                txtLocalizacao.setTextColor(Color.rgb(163, 29, 29));
             }
-        });
+        }, id);
     }
 
     // ----------------------------------------------------------------
@@ -385,6 +378,8 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         // Campos comuns
         edtIdCliente = findViewById(R.id.edtIdCliente);
         txtVIdCliente = findViewById(R.id.txtVIdCliente);
+        txtLocalizacao = findViewById(R.id.txtLocalizacao);
+        edtLocalizacao = findViewById(R.id.edtLocalizacao);
 
         edtNome = findViewById(R.id.edtNome);
         edtLocalizacao = findViewById(R.id.edtLocalizacao);
@@ -432,6 +427,27 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
                 buscarCliente(Long.parseLong(s.toString()));
             }
         });
+
+        edtLocalizacao.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().trim().isEmpty() || !TextUtils.isDigitsOnly(s.toString())) {
+                    txtLocalizacao.setVisibility(View.GONE);
+                    return;
+                }
+                buscarLocalizacao(Long.parseLong(s.toString()));
+            }
+        });
+
+
 
 
         // ---- Populando Spinners ----

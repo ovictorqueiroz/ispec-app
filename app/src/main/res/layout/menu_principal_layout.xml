@@ -287,7 +287,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardScanQRCode"
+                    android:id="@+id/cardInspecoes"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="8dp"
@@ -309,13 +309,13 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:adjustViewBounds="true"
-                            android:src="@drawable/ic_scan_duotone" />
+                            android:src="@drawable/ic_note_pencil_duotone" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
-                            android:text="Escanear QRCode"
+                            android:text="Inspeções"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 

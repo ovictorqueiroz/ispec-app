@@ -18,9 +18,20 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ClienteV
     private List<ClienteModel> listaClientes;
     private List<ClienteModel> listaFiltrada;
 
+    public interface OnClienteClickListener {
+        void onClienteClick(ClienteModel cliente);
+    }
+
     public ClienteAdapter(List<ClienteModel> listaClientes){
         this.listaClientes = new ArrayList<>(listaClientes);
         this.listaFiltrada = new ArrayList<>(listaClientes);
+    }
+    private OnClienteClickListener listener;
+
+    public ClienteAdapter(List<ClienteModel> listaClientes, OnClienteClickListener listener) {
+        this.listaClientes = new ArrayList<>(listaClientes);
+        this.listaFiltrada = new ArrayList<>(listaClientes);
+        this.listener = listener;
     }
 
     @NonNull
@@ -35,6 +46,8 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ClienteV
         ClienteModel cliente = listaFiltrada.get(position);
         holder.tvNomeEmpresa.setText(cliente.getRazaoSocial());
         holder.tvEndereco.setText(cliente.getEndereco());
+        holder.itemView.setOnClickListener(v -> listener.onClienteClick(cliente));
+
     }
 
     @Override

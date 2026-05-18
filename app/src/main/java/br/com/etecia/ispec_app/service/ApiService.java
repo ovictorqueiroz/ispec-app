@@ -3,6 +3,7 @@ package br.com.etecia.ispec_app.service;
 import java.util.List;
 
 import br.com.etecia.ispec_app.model.ClienteModel;
+import br.com.etecia.ispec_app.model.EquipamentoModel;
 import br.com.etecia.ispec_app.model.LocalizacaoModel;
 import br.com.etecia.ispec_app.requests.EquipamentoRequest;
 import br.com.etecia.ispec_app.requests.LoginRequest;
@@ -23,6 +24,9 @@ public interface ApiService {
 
     @GET("clientes")
     Call<List<ClienteModel>> listarClientes();
+
+    @GET("{id}/equipamentos")
+    Call<List<EquipamentoModel>>listarPorCliente(@Path("id") Long id);
 
 
 

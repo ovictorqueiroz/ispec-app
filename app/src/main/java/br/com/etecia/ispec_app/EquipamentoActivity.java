@@ -39,7 +39,7 @@ public class EquipamentoActivity extends AppCompatActivity {
 
         arrowLeft = findViewById(R.id.arrowLeft);
         arrowLeft.setOnClickListener(v -> {
-            startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+            startActivity(new Intent(getApplicationContext(), ClientesActivity.class));
             finish();
         });
 

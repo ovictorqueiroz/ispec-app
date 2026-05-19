@@ -25,7 +25,7 @@ public interface ApiService {
     @GET("clientes")
     Call<List<ClienteModel>> listarClientes();
 
-    @GET("{id}/equipamentos")
+    @GET("clientes/{id}/equipamentos")
     Call<List<EquipamentoModel>>listarPorCliente(@Path("id") Long id);
 
 

@@ -62,7 +62,7 @@ public class ClientesActivity extends AppCompatActivity {
 
         rvClientes.setLayoutManager(new LinearLayoutManager(this));
 
-        ClienteAdapter adapter = new ClienteAdapter(new ArrayList<>(), cliente -> {Intent intent = new Intent(this, EquipamentosActivity.class);
+        ClienteAdapter adapter = new ClienteAdapter(new ArrayList<>(), cliente -> {Intent intent = new Intent(this, EquipamentoActivity.class);
             intent.putExtra("clienteId", cliente.getId());
             startActivity(intent);});
         rvClientes.setAdapter(adapter);

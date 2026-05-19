@@ -22,10 +22,6 @@ public class ClienteAdapter extends RecyclerView.Adapter<ClienteAdapter.ClienteV
         void onClienteClick(ClienteModel cliente);
     }
 
-    public ClienteAdapter(List<ClienteModel> listaClientes){
-        this.listaClientes = new ArrayList<>(listaClientes);
-        this.listaFiltrada = new ArrayList<>(listaClientes);
-    }
     private OnClienteClickListener listener;
 
     public ClienteAdapter(List<ClienteModel> listaClientes, OnClienteClickListener listener) {

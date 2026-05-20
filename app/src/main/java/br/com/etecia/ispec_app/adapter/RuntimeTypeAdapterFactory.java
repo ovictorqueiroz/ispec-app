@@ -7,7 +7,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
-import com.google.gson.internal.Streams;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
@@ -51,16 +50,24 @@ public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
             subtypeToDelegate.put(entry.getValue(), delegate);
         }
 
+        // FIX: usa TypeAdapter<JsonElement> em vez de com.google.gson.internal.Streams
+        final TypeAdapter<JsonElement> jsonElementAdapter = gson.getAdapter(JsonElement.class);
+
         return new TypeAdapter<R>() {
             @Override
             public R read(JsonReader in) throws IOException {
-                JsonElement jsonElement = Streams.parse(in);
+                // Lê o JSON como JsonElement sem usar Streams.parse()
+                JsonElement jsonElement = jsonElementAdapter.read(in);
                 JsonElement labelJsonElement = jsonElement.getAsJsonObject().get(typeFieldName);
-                if (labelJsonElement == null) throw new JsonParseException("Campo '" + typeFieldName + "' não encontrado no JSON");
+                if (labelJsonElement == null) {
+                    throw new JsonParseException("Campo '" + typeFieldName + "' não encontrado no JSON");
+                }
                 String label = labelJsonElement.getAsString();
                 @SuppressWarnings("unchecked")
                 TypeAdapter<R> delegate = (TypeAdapter<R>) labelToDelegate.get(label);
-                if (delegate == null) throw new JsonParseException("Tipo desconhecido: " + label);
+                if (delegate == null) {
+                    throw new JsonParseException("Tipo desconhecido: " + label);
+                }
                 return delegate.fromJsonTree(jsonElement);
             }
 
@@ -70,14 +77,17 @@ public final class RuntimeTypeAdapterFactory<T> implements TypeAdapterFactory {
                 String label = subtypeToLabel.get(srcType);
                 @SuppressWarnings("unchecked")
                 TypeAdapter<R> delegate = (TypeAdapter<R>) subtypeToDelegate.get(srcType);
-                if (delegate == null) throw new JsonParseException("Tipo não registrado: " + srcType.getName());
+                if (delegate == null) {
+                    throw new JsonParseException("Tipo não registrado: " + srcType.getName());
+                }
                 JsonObject jsonObject = delegate.toJsonTree(value).getAsJsonObject();
                 JsonObject clone = new JsonObject();
                 clone.add(typeFieldName, new JsonPrimitive(label));
                 for (Map.Entry<String, JsonElement> e : jsonObject.entrySet()) {
                     clone.add(e.getKey(), e.getValue());
                 }
-                Streams.write(clone, out);
+                // Escreve o JsonObject sem usar Streams.write()
+                jsonElementAdapter.write(out, clone);
             }
         };
     }

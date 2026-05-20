@@ -1,8 +1,9 @@
 package br.com.etecia.ispec_app.model;
 
-import br.com.etecia.ispec_app.interfaces.SerializedName;
+import com.google.gson.annotations.SerializedName; // FIX Bug #1: import correto do Gson
 
 public class AlarmeModel extends EquipamentoModel {
+
     @SerializedName("tipo")
     private final String tipo = "alarme"; // obrigatório para o @JsonTypeInfo do backend
 
@@ -11,7 +12,7 @@ public class AlarmeModel extends EquipamentoModel {
     private boolean funcionando;
     private String ultimaVerificacao;
 
-    public AlarmeModel(){}
+    public AlarmeModel() {}
 
     public String getTipo() {
         return tipo;

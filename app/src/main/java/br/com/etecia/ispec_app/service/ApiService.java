@@ -1,9 +1,10 @@
 package br.com.etecia.ispec_app.service;
 
+import com.google.gson.JsonObject;
+
 import java.util.List;
 
 import br.com.etecia.ispec_app.model.ClienteModel;
-import br.com.etecia.ispec_app.model.EquipamentoModel;
 import br.com.etecia.ispec_app.model.LocalizacaoModel;
 import br.com.etecia.ispec_app.requests.EquipamentoRequest;
 import br.com.etecia.ispec_app.requests.LoginRequest;
@@ -25,10 +26,9 @@ public interface ApiService {
     @GET("clientes")
     Call<List<ClienteModel>> listarClientes();
 
+    // Agora retorna List<JsonObject> para deserializar manualmente no Repository
     @GET("clientes/{id}/equipamentos")
-    Call<List<EquipamentoModel>>listarPorCliente(@Path("id") Long id);
-
-
+    Call<List<JsonObject>> listarPorCliente(@Path("id") Long id);
 
     //===POSTS===
     @POST("auth/login")

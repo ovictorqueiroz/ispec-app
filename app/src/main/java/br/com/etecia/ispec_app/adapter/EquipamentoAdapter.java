@@ -13,6 +13,7 @@ import java.util.List;
 
 import br.com.etecia.ispec_app.R;
 import br.com.etecia.ispec_app.model.EquipamentoModel;
+import br.com.etecia.ispec_app.model.LocalizacaoModel;
 
 public class EquipamentoAdapter extends RecyclerView.Adapter<EquipamentoAdapter.EquipamentoViewHolder> {
     private List<EquipamentoModel> listaEquipamentos;
@@ -33,10 +34,16 @@ public class EquipamentoAdapter extends RecyclerView.Adapter<EquipamentoAdapter.
         EquipamentoModel equipamento = listaEquipamentos.get(position);
         holder.tvNomeEquipamento.setText(equipamento.getNome());
 
-        String localizacao = equipamento.getLocalizacao().getBloco() + " - " +
-                equipamento.getLocalizacao().getAndar() + " - " +
-                equipamento.getLocalizacao().getSala();
-        holder.tvLocalizacao.setText(localizacao);
+        // FIX Bug #5: null-check na localização para evitar NullPointerException
+        LocalizacaoModel loc = equipamento.getLocalizacao();
+        if (loc != null) {
+            String bloco = loc.getBloco() != null ? loc.getBloco() : "-";
+            String andar = loc.getAndar() != null ? loc.getAndar() : "-";
+            String sala  = loc.getSala()  != null ? loc.getSala()  : "-";
+            holder.tvLocalizacao.setText(bloco + " - " + andar + " - " + sala);
+        } else {
+            holder.tvLocalizacao.setText("Localização não informada");
+        }
     }
 
     @Override

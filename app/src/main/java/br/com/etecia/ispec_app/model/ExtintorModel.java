@@ -1,16 +1,15 @@
 package br.com.etecia.ispec_app.model;
 
-import br.com.etecia.ispec_app.interfaces.SerializedName;
+import com.google.gson.annotations.SerializedName; // FIX Bug #1: import correto do Gson
 
-public class
-ExtintorModel extends EquipamentoModel {
+public class ExtintorModel extends EquipamentoModel {
 
     @SerializedName("tipo")
     private final String tipo = "extintor"; // obrigatório para o @JsonTypeInfo do backend
 
     private String classeFogo;
     private double capacidade;
-    private String dataValidade;  // LocalDate no backend → String no Android
+    private String dataValidade; // LocalDate no backend → String no Android
     private int pressao;
 
     public ExtintorModel() {}

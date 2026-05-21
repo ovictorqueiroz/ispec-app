@@ -3,6 +3,7 @@ package br.com.etecia.ispec_app.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,7 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.etecia.ispec_app.R;
+import br.com.etecia.ispec_app.model.AlarmeModel;
 import br.com.etecia.ispec_app.model.EquipamentoModel;
+import br.com.etecia.ispec_app.model.ExtintorModel;
+import br.com.etecia.ispec_app.model.HidranteModel;
 import br.com.etecia.ispec_app.model.LocalizacaoModel;
 
 public class EquipamentoAdapter extends RecyclerView.Adapter<EquipamentoAdapter.EquipamentoViewHolder> {
@@ -32,9 +36,21 @@ public class EquipamentoAdapter extends RecyclerView.Adapter<EquipamentoAdapter.
     @Override
     public void onBindViewHolder(@NonNull EquipamentoViewHolder holder, int position) {
         EquipamentoModel equipamento = listaEquipamentos.get(position);
+
         holder.tvNomeEquipamento.setText(equipamento.getNome());
 
-        // FIX Bug #5: null-check na localização para evitar NullPointerException
+        // Ícone dinâmico por tipo de equipamento
+        if (equipamento instanceof ExtintorModel) {
+            holder.ivIcone.setImageResource(R.drawable.ic_fire_extinguisher_duotone);
+        } else if (equipamento instanceof AlarmeModel) {
+            holder.ivIcone.setImageResource(R.drawable.ic_siren_duotone);
+        } else if (equipamento instanceof HidranteModel) {
+            holder.ivIcone.setImageResource(R.drawable.ic_fire_hydrant);
+        } else {
+            holder.ivIcone.setImageResource(R.drawable.ic_fire_extinguisher_duotone);
+        }
+
+        // Null-check na localização para evitar NullPointerException
         LocalizacaoModel loc = equipamento.getLocalizacao();
         if (loc != null) {
             String bloco = loc.getBloco() != null ? loc.getBloco() : "-";
@@ -58,11 +74,13 @@ public class EquipamentoAdapter extends RecyclerView.Adapter<EquipamentoAdapter.
 
     public static class EquipamentoViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvNomeEquipamento, tvLocalizacao;
+        private final ImageView ivIcone;
 
         public EquipamentoViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNomeEquipamento = itemView.findViewById(R.id.tvNomeEquipamento);
             tvLocalizacao = itemView.findViewById(R.id.tvLocalizacao);
+            ivIcone = itemView.findViewById(R.id.ivIconeEquipamento);
         }
     }
 }

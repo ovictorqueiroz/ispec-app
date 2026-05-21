@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 import br.com.etecia.ispec_app.model.AlarmeModel;
 import br.com.etecia.ispec_app.model.EquipamentoModel;
 import br.com.etecia.ispec_app.model.ExtintorModel;
+import br.com.etecia.ispec_app.model.HidranteModel;
 
 public class EquipamentoTypeAdapter implements JsonDeserializer<EquipamentoModel> {
 
@@ -33,8 +34,10 @@ public class EquipamentoTypeAdapter implements JsonDeserializer<EquipamentoModel
                 return gson.fromJson(jsonObject, ExtintorModel.class);
             case "alarme":
                 return gson.fromJson(jsonObject, AlarmeModel.class);
+            case "hidrante":
+                return gson.fromJson(jsonObject, HidranteModel.class);
             default:
-                throw new JsonParseException("Tipo de equipamento desconhecido: " + tipo);
+                throw new JsonParseException("Tipo de equipamento desconhecido: " + tipoElement.getAsString());
         }
     }
 }

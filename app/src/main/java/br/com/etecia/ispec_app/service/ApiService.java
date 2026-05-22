@@ -33,11 +33,8 @@ public interface ApiService {
     Call<List<JsonObject>> listarPorCliente(@Path("id") Long id);
 
     // === AGENDAMENTOS ===
-    @GET("agendamentos/mes")
-    Call<List<AgendamentoModel>> listarAgendamentosPorMes(
-            @Query("ano") int ano,
-            @Query("mes") int mes
-    );
+    @GET("agendamentos")
+    Call<List<AgendamentoModel>> listarTodosAgendamentos();
 
     @POST("agendamentos")
     Call<AgendamentoModel> salvarAgendamento(@Body AgendamentoModel agendamento);

@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Ispecapp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".AgendaActivity"
+            android:exported="false" />
+        <activity
             android:name=".EquipamentoActivity"
             android:exported="false" />
         <activity

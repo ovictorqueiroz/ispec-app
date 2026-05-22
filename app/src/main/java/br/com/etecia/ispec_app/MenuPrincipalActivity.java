@@ -11,10 +11,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-
 public class MenuPrincipalActivity extends AppCompatActivity {
     CardView cardAvisos, cardClientes, cardRelatorios, cardAgenda, cardScanQRCode,
             cardCadEquipamentos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,31 +29,27 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         cardAvisos = findViewById(R.id.cardAvisos);
         cardClientes = findViewById(R.id.cardClientes);
         cardCadEquipamentos = findViewById(R.id.cardCadEquipamentos);
+        cardAgenda = findViewById(R.id.cardAgenda);
 
-        cardAvisos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), AvisosActivity.class));
-                finish();
-            }
+        cardAvisos.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), AvisosActivity.class));
+            finish();
         });
 
-        cardClientes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ClientesActivity.class));
-                finish();
-            }
+        cardClientes.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), ClientesActivity.class));
+            finish();
         });
 
-        cardCadEquipamentos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CadastroEquipamentoActivity.class));
-                finish();
-            }
+        cardCadEquipamentos.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), CadastroEquipamentoActivity.class));
+            finish();
+        });
+
+        // ← NOVO: navegação para a Agenda
+        cardAgenda.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), AgendaActivity.class));
+            finish();
         });
     }
-
-
 }

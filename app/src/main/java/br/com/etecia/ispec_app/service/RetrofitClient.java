@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import br.com.etecia.ispec_app.adapter.EquipamentoTypeAdapter;
+import br.com.etecia.ispec_app.model.EquipamentoModel;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
@@ -35,7 +38,9 @@ public class RetrofitClient {
                     })
                     .build();
 
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(EquipamentoModel.class, new EquipamentoTypeAdapter())
+                    .create();
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)

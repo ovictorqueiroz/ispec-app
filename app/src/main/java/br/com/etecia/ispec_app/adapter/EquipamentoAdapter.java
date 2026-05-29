@@ -1,8 +1,11 @@
 package br.com.etecia.ispec_app.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.etecia.ispec_app.R;
+import br.com.etecia.ispec_app.RealizarInspecaoActivity;
 import br.com.etecia.ispec_app.model.AlarmeModel;
 import br.com.etecia.ispec_app.model.EquipamentoModel;
 import br.com.etecia.ispec_app.model.ExtintorModel;
@@ -20,6 +24,7 @@ import br.com.etecia.ispec_app.model.HidranteModel;
 import br.com.etecia.ispec_app.model.LocalizacaoModel;
 
 public class EquipamentoAdapter extends RecyclerView.Adapter<EquipamentoAdapter.EquipamentoViewHolder> {
+
     private List<EquipamentoModel> listaEquipamentos;
 
     public EquipamentoAdapter(List<EquipamentoModel> listaEquipamentos) {
@@ -39,7 +44,7 @@ public class EquipamentoAdapter extends RecyclerView.Adapter<EquipamentoAdapter.
 
         holder.tvNomeEquipamento.setText(equipamento.getNome());
 
-        // Ícone dinâmico por tipo de equipamento
+        // Ícone dinâmico por tipo
         if (equipamento instanceof ExtintorModel) {
             holder.ivIcone.setImageResource(R.drawable.ic_fire_extinguisher_duotone);
         } else if (equipamento instanceof AlarmeModel) {
@@ -50,7 +55,7 @@ public class EquipamentoAdapter extends RecyclerView.Adapter<EquipamentoAdapter.
             holder.ivIcone.setImageResource(R.drawable.ic_fire_extinguisher_duotone);
         }
 
-        // Null-check na localização para evitar NullPointerException
+        // Localização
         LocalizacaoModel loc = equipamento.getLocalizacao();
         if (loc != null) {
             String bloco = loc.getBloco() != null ? loc.getBloco() : "-";
@@ -60,6 +65,25 @@ public class EquipamentoAdapter extends RecyclerView.Adapter<EquipamentoAdapter.
         } else {
             holder.tvLocalizacao.setText("Localização não informada");
         }
+
+        // Botão Inspecionar
+        holder.btnInspecionar.setOnClickListener(v -> {
+            Context context = v.getContext();
+            String tipo = resolverTipoEquipamento(equipamento);
+            Intent intent = new Intent(context, RealizarInspecaoActivity.class);
+            intent.putExtra(RealizarInspecaoActivity.EXTRA_EQUIPAMENTO_ID, equipamento.getId());
+            intent.putExtra(RealizarInspecaoActivity.EXTRA_EQUIPAMENTO_NOME, equipamento.getNome());
+            intent.putExtra(RealizarInspecaoActivity.EXTRA_EQUIPAMENTO_TIPO, tipo);
+            context.startActivity(intent);
+        });
+    }
+
+    /** Resolve o tipo do equipamento para o formato aceito pelo backend */
+    private String resolverTipoEquipamento(EquipamentoModel equipamento) {
+        if (equipamento instanceof ExtintorModel) return "Extintor";
+        if (equipamento instanceof AlarmeModel)   return "Alarme";
+        if (equipamento instanceof HidranteModel) return "Hidrante";
+        return "Extintor"; // fallback seguro
     }
 
     @Override
@@ -73,14 +97,16 @@ public class EquipamentoAdapter extends RecyclerView.Adapter<EquipamentoAdapter.
     }
 
     public static class EquipamentoViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvNomeEquipamento, tvLocalizacao;
-        private final ImageView ivIcone;
+        final TextView tvNomeEquipamento, tvLocalizacao;
+        final ImageView ivIcone;
+        final Button btnInspecionar;
 
         public EquipamentoViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNomeEquipamento = itemView.findViewById(R.id.tvNomeEquipamento);
-            tvLocalizacao = itemView.findViewById(R.id.tvLocalizacao);
-            ivIcone = itemView.findViewById(R.id.ivIconeEquipamento);
+            tvLocalizacao     = itemView.findViewById(R.id.tvLocalizacao);
+            ivIcone           = itemView.findViewById(R.id.ivIconeEquipamento);
+            btnInspecionar    = itemView.findViewById(R.id.btnInspecionar);
         }
     }
 }

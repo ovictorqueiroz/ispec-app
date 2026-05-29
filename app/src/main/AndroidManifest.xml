@@ -16,6 +16,14 @@
         android:theme="@style/Theme.Ispecapp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".InspecoesActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".RealizarInspecaoActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".AgendaActivity"
             android:exported="false" />
         <activity

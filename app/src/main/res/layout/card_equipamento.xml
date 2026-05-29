@@ -7,11 +7,14 @@
     android:layout_margin="5dp"
     app:cardCornerRadius="25dp"
     app:cardElevation="8dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        >
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
         <ImageView
             android:id="@+id/ivIconeEquipamento"
             android:layout_width="48dp"
@@ -19,37 +22,49 @@
             android:layout_weight="0"
             android:scaleType="fitCenter"
             android:layout_margin="5dp"
-            android:src="@drawable/ic_fire_extinguisher_duotone"
-            />
+            android:src="@drawable/ic_fire_extinguisher_duotone" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="5dp"
-        android:layout_weight="1"
-        >
-
-
-        <TextView
-            android:id="@+id/tvNomeEquipamento"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text=""
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/tvLocalizacao"
-            android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvNomeEquipamento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text=""
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvLocalizacao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text=""
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!-- Botão Inspecionar -->
+        <Button
+            android:id="@+id/btnInspecionar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text=""
-            android:textSize="14sp"
-            />
+            android:background="@drawable/bg_button_green"
+            android:text="Inspecionar"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_marginStart="4dp" />
 
     </LinearLayout>
 
-    </LinearLayout>
 </androidx.cardview.widget.CardView>

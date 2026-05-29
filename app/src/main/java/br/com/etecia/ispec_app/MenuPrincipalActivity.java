@@ -2,7 +2,6 @@ package br.com.etecia.ispec_app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +11,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MenuPrincipalActivity extends AppCompatActivity {
-    CardView cardAvisos, cardClientes, cardRelatorios, cardAgenda, cardScanQRCode,
-            cardCadEquipamentos;
+
+    CardView cardAvisos, cardClientes, cardRelatorios, cardAgenda, cardCadEquipamentos, cardInspecoes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +25,11 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             return insets;
         });
 
-        cardAvisos = findViewById(R.id.cardAvisos);
-        cardClientes = findViewById(R.id.cardClientes);
-        cardCadEquipamentos = findViewById(R.id.cardCadEquipamentos);
-        cardAgenda = findViewById(R.id.cardAgenda);
+        cardAvisos           = findViewById(R.id.cardAvisos);
+        cardClientes         = findViewById(R.id.cardClientes);
+        cardCadEquipamentos  = findViewById(R.id.cardCadEquipamentos);
+        cardAgenda           = findViewById(R.id.cardAgenda);
+        cardInspecoes        = findViewById(R.id.cardInspecoes);
 
         cardAvisos.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), AvisosActivity.class));
@@ -46,9 +46,14 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             finish();
         });
 
-        // ← NOVO: navegação para a Agenda
         cardAgenda.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), AgendaActivity.class));
+            finish();
+        });
+
+        // Inspeções → histórico de inspeções
+        cardInspecoes.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), InspecoesActivity.class));
             finish();
         });
     }

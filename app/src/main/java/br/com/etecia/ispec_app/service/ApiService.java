@@ -6,9 +6,12 @@ import java.util.List;
 
 import br.com.etecia.ispec_app.model.AgendamentoModel;
 import br.com.etecia.ispec_app.model.ClienteModel;
+import br.com.etecia.ispec_app.model.InspecaoModel;
 import br.com.etecia.ispec_app.model.LocalizacaoModel;
+import br.com.etecia.ispec_app.model.PerguntaInspecaoModel;
 import br.com.etecia.ispec_app.model.UsuarioModel;
 import br.com.etecia.ispec_app.requests.EquipamentoRequest;
+import br.com.etecia.ispec_app.requests.InspecaoRequest;
 import br.com.etecia.ispec_app.requests.LoginRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -50,4 +53,15 @@ public interface ApiService {
     // === EQUIPAMENTOS ===
     @POST("equipamentos")
     Call<Void> cadastrarEquipamento(@Body EquipamentoRequest request);
+
+    // === INSPEÇÕES ===
+    @GET("inspecoes")
+    Call<List<InspecaoModel>> listarInspecoes();
+
+    @POST("inspecoes")
+    Call<InspecaoModel> criarInspecao(@Body InspecaoRequest request);
+
+    // === PERGUNTAS DE INSPEÇÃO ===
+    @GET("perguntas-inspecao/tipo/{tipo}")
+    Call<List<PerguntaInspecaoModel>> listarPerguntasPorTipo(@Path("tipo") String tipo);
 }

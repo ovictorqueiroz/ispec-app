@@ -124,7 +124,7 @@
                 android:id="@+id/btnSalvarInspecao"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:background="@drawable/bg_button_green"
+                android:background="@drawable/bg_button"
                 android:text="Finalizar Inspeção"
                 android:textColor="@color/white"
                 android:textSize="16sp"

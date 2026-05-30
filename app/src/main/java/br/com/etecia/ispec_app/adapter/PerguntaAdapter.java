@@ -1,12 +1,14 @@
 package br.com.etecia.ispec_app.adapter;
 
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -21,20 +23,18 @@ import br.com.etecia.ispec_app.requests.InspecaoRequest;
 public class PerguntaAdapter extends RecyclerView.Adapter<PerguntaAdapter.PerguntaViewHolder> {
 
     private List<PerguntaInspecaoModel> perguntas = new ArrayList<>();
-    // Armazena a resposta de cada pergunta por ID. Default = true (Sim)
+    // null = nenhum botão selecionado ainda; true = Sim; false = Não
     private final Map<Long, Boolean> respostas = new HashMap<>();
 
     public PerguntaAdapter(List<PerguntaInspecaoModel> perguntas) {
         this.perguntas = new ArrayList<>(perguntas);
-        for (PerguntaInspecaoModel p : perguntas) {
-            respostas.put(p.getId(), true);
-        }
     }
 
     @NonNull
     @Override
     public PerguntaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_pergunta_inspecao, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_pergunta_inspecao, parent, false);
         return new PerguntaViewHolder(view);
     }
 
@@ -43,21 +43,37 @@ public class PerguntaAdapter extends RecyclerView.Adapter<PerguntaAdapter.Pergun
         PerguntaInspecaoModel pergunta = perguntas.get(position);
         holder.tvPergunta.setText(pergunta.getPergunta());
 
-        // Define o estado do switch sem disparar o listener
-        holder.swResposta.setOnCheckedChangeListener(null);
+        // Reflete o estado visual atual
         Boolean resposta = respostas.get(pergunta.getId());
-        holder.swResposta.setChecked(resposta != null ? resposta : true);
+        atualizarEstadoBotoes(holder, resposta);
 
-        // Atualiza o label e armazena a resposta ao mudar o switch
-        atualizarLabelSwitch(holder.swResposta, holder.swResposta.isChecked());
-        holder.swResposta.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            respostas.put(pergunta.getId(), isChecked);
-            atualizarLabelSwitch(buttonView, isChecked);
+        holder.btnSim.setOnClickListener(v -> {
+            respostas.put(pergunta.getId(), true);
+            atualizarEstadoBotoes(holder, true);
+        });
+
+        holder.btnNao.setOnClickListener(v -> {
+            respostas.put(pergunta.getId(), false);
+            atualizarEstadoBotoes(holder, false);
         });
     }
 
-    private void atualizarLabelSwitch(android.widget.CompoundButton sw, boolean isChecked) {
-        ((Switch) sw).setText(isChecked ? "Sim" : "Não");
+    /**
+     * null  → ambos cinza (nenhum selecionado)
+     * true  → Sim verde, Não cinza
+     * false → Sim cinza, Não vermelho
+     */
+    private void atualizarEstadoBotoes(PerguntaViewHolder holder, Boolean resposta) {
+        if (resposta == null) {
+            holder.btnSim.setBackgroundResource(R.color.cinzaEscuro);
+            holder.btnNao.setBackgroundResource(R.color.cinzaEscuro);
+        } else if (resposta) {
+            holder.btnSim.setBackgroundResource(R.color.verdeSalvar);
+            holder.btnNao.setBackgroundResource(R.color.vermelhoClaro);
+        } else {
+            holder.btnSim.setBackgroundResource(R.color.cinzaEscuro);
+            holder.btnNao.setBackgroundResource(R.drawable.bg_button_nao);
+        }
     }
 
     @Override
@@ -65,24 +81,31 @@ public class PerguntaAdapter extends RecyclerView.Adapter<PerguntaAdapter.Pergun
         return perguntas.size();
     }
 
-    /** Constrói a lista de ItemDTO para enviar ao backend */
+    /**
+     * Retorna os itens para o request.
+     * Lança IllegalStateException se alguma pergunta ainda não foi respondida.
+     */
     public List<InspecaoRequest.ItemDTO> getItens() {
         List<InspecaoRequest.ItemDTO> itens = new ArrayList<>();
         for (PerguntaInspecaoModel p : perguntas) {
             Boolean resposta = respostas.get(p.getId());
-            itens.add(new InspecaoRequest.ItemDTO(p.getId(), resposta != null ? resposta : true));
+            if (resposta == null) {
+                throw new IllegalStateException("Responda todas as perguntas antes de finalizar.");
+            }
+            itens.add(new InspecaoRequest.ItemDTO(p.getId(), resposta));
         }
         return itens;
     }
 
     public static class PerguntaViewHolder extends RecyclerView.ViewHolder {
         final TextView tvPergunta;
-        final Switch swResposta;
+        final Button btnSim, btnNao;
 
         public PerguntaViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvPergunta  = itemView.findViewById(R.id.tvPergunta);
-            swResposta  = itemView.findViewById(R.id.swResposta);
+            tvPergunta = itemView.findViewById(R.id.tvPergunta);
+            btnSim     = itemView.findViewById(R.id.btnSim);
+            btnNao     = itemView.findViewById(R.id.btnNao);
         }
     }
 }

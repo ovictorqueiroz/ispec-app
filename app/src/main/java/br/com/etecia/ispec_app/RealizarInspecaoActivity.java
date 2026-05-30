@@ -30,9 +30,9 @@ import br.com.etecia.ispec_app.viewmodel.InspecaoViewModel;
 
 public class RealizarInspecaoActivity extends AppCompatActivity {
 
-    public static final String EXTRA_EQUIPAMENTO_ID = "equipamentoId";
+    public static final String EXTRA_EQUIPAMENTO_ID   = "equipamentoId";
     public static final String EXTRA_EQUIPAMENTO_NOME = "equipamentoNome";
-    public static final String EXTRA_EQUIPAMENTO_TIPO = "equipamentoTipo"; // "Extintor", "Alarme", "Hidrante"
+    public static final String EXTRA_EQUIPAMENTO_TIPO = "equipamentoTipo";
 
     private InspecaoViewModel viewModel;
     private PerguntaAdapter perguntaAdapter;
@@ -53,7 +53,6 @@ public class RealizarInspecaoActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Dados recebidos via Intent
         equipamentoId = getIntent().getLongExtra(EXTRA_EQUIPAMENTO_ID, -1L);
         String equipamentoNome = getIntent().getStringExtra(EXTRA_EQUIPAMENTO_NOME);
         String equipamentoTipo = getIntent().getStringExtra(EXTRA_EQUIPAMENTO_TIPO);
@@ -64,29 +63,24 @@ public class RealizarInspecaoActivity extends AppCompatActivity {
             return;
         }
 
-        // Header: nome do equipamento
         TextView txtTitulo = findViewById(R.id.txtTituloInspecao);
         txtTitulo.setText(equipamentoNome != null ? equipamentoNome : "Inspeção");
 
-        // Voltar
         ImageView arrowLeft = findViewById(R.id.arrowLeft);
         arrowLeft.setOnClickListener(v -> finish());
 
-        // Data
         etData = findViewById(R.id.etDataInspecao);
         etData.setFocusable(false);
         etData.setOnClickListener(v -> abrirDatePicker());
 
         etObservacoes = findViewById(R.id.etObservacoes);
-        progressBar = findViewById(R.id.progressBar);
+        progressBar   = findViewById(R.id.progressBar);
 
-        // RecyclerView do checklist
         RecyclerView rvPerguntas = findViewById(R.id.rvPerguntas);
         rvPerguntas.setLayoutManager(new LinearLayoutManager(this));
         perguntaAdapter = new PerguntaAdapter(new ArrayList<>());
         rvPerguntas.setAdapter(perguntaAdapter);
 
-        // ViewModel
         viewModel = new ViewModelProvider(this).get(InspecaoViewModel.class);
 
         viewModel.getPerguntas().observe(this, perguntas -> {
@@ -107,14 +101,12 @@ public class RealizarInspecaoActivity extends AppCompatActivity {
             Toast.makeText(this, "Erro: " + erro, Toast.LENGTH_SHORT).show();
         });
 
-        viewModel.getCarregando().observe(this, carregando -> {
-            progressBar.setVisibility(Boolean.TRUE.equals(carregando) ? View.VISIBLE : View.GONE);
-        });
+        viewModel.getCarregando().observe(this, carregando ->
+            progressBar.setVisibility(Boolean.TRUE.equals(carregando) ? View.VISIBLE : View.GONE)
+        );
 
-        // Carrega perguntas do tipo do equipamento
         viewModel.buscarPerguntasPorTipo(equipamentoTipo);
 
-        // Botão salvar
         Button btnSalvar = findViewById(R.id.btnSalvarInspecao);
         btnSalvar.setOnClickListener(v -> submeterInspecao());
     }
@@ -133,7 +125,14 @@ public class RealizarInspecaoActivity extends AppCompatActivity {
             return;
         }
 
-        List<InspecaoRequest.ItemDTO> itens = perguntaAdapter.getItens();
+        List<InspecaoRequest.ItemDTO> itens;
+        try {
+            itens = perguntaAdapter.getItens();
+        } catch (IllegalStateException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (itens.isEmpty()) {
             Toast.makeText(this, "Nenhuma pergunta disponível.", Toast.LENGTH_SHORT).show();
             return;
@@ -141,7 +140,7 @@ public class RealizarInspecaoActivity extends AppCompatActivity {
 
         InspecaoRequest request = new InspecaoRequest();
         request.setEquipamentoId(equipamentoId);
-        request.setResponsavelId(null); // backend resolve pelo JWT
+        request.setResponsavelId(null);
         request.setDataInspecao(dataInspecao);
         String obs = etObservacoes.getText().toString().trim();
         request.setObservacoes(obs.isEmpty() ? null : obs);

@@ -12,15 +12,27 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text=""
-        android:textSize="15sp"
-        android:paddingEnd="8dp" />
+        android:textSize="14sp"
+        android:paddingEnd="12dp" />
 
-    <Switch
-        android:id="@+id/swResposta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="Sim"
-        android:textSize="14sp" />
+    <Button
+        android:id="@+id/btnSim"
+        android:layout_width="64dp"
+        android:layout_height="36dp"
+        android:backgroundTint="@color/cinzaEscuro"
+        android:text="✔"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:layout_marginEnd="6dp" />
+
+    <Button
+        android:id="@+id/btnNao"
+        android:layout_width="64dp"
+        android:layout_height="36dp"
+        android:backgroundTint="@color/cinzaEscuro"
+        android:text="✖"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

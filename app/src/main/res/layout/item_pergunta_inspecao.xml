@@ -15,21 +15,21 @@
         android:textSize="14sp"
         android:paddingEnd="12dp" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSim"
         android:layout_width="64dp"
         android:layout_height="36dp"
-        android:backgroundTint="@color/cinzaEscuro"
+        android:background="@drawable/bg_button_inativo"
         android:text="✔"
         android:textColor="@color/white"
         android:textSize="10sp"
         android:layout_marginEnd="6dp" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnNao"
         android:layout_width="64dp"
         android:layout_height="36dp"
-        android:backgroundTint="@color/cinzaEscuro"
+        android:background="@drawable/bg_button_inativo"
         android:text="✖"
         android:textColor="@color/white"
         android:textSize="13sp"

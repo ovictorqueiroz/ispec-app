@@ -65,13 +65,13 @@ public class PerguntaAdapter extends RecyclerView.Adapter<PerguntaAdapter.Pergun
      */
     private void atualizarEstadoBotoes(PerguntaViewHolder holder, Boolean resposta) {
         if (resposta == null) {
-            holder.btnSim.setBackgroundResource(R.color.cinzaEscuro);
-            holder.btnNao.setBackgroundResource(R.color.cinzaEscuro);
+            holder.btnSim.setBackgroundResource(R.drawable.bg_button_inativo);
+            holder.btnNao.setBackgroundResource(R.drawable.bg_button_inativo);
         } else if (resposta) {
-            holder.btnSim.setBackgroundResource(R.color.verdeSalvar);
-            holder.btnNao.setBackgroundResource(R.color.vermelhoClaro);
+            holder.btnSim.setBackgroundResource(R.drawable.bg_button_green);
+            holder.btnNao.setBackgroundResource(R.drawable.bg_button_inativo);
         } else {
-            holder.btnSim.setBackgroundResource(R.color.cinzaEscuro);
+            holder.btnSim.setBackgroundResource(R.drawable.bg_button_inativo);
             holder.btnNao.setBackgroundResource(R.drawable.bg_button_nao);
         }
     }

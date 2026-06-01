@@ -13,12 +13,12 @@ import br.com.etecia.ispec_app.model.UsuarioModel;
 import br.com.etecia.ispec_app.requests.EquipamentoRequest;
 import br.com.etecia.ispec_app.requests.InspecaoRequest;
 import br.com.etecia.ispec_app.requests.LoginRequest;
+import br.com.etecia.ispec_app.requests.LocalizacaoRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -29,11 +29,20 @@ public interface ApiService {
     @GET("clientes")
     Call<List<ClienteModel>> listarClientes();
 
+    @GET("clientes/{id}/equipamentos")
+    Call<List<JsonObject>> listarPorCliente(@Path("id") Long id);
+
+    // === LOCALIZAÇÕES ===
     @GET("localizacoes/{id}")
     Call<LocalizacaoModel> buscarLocalizacao(@Path("id") Long id);
 
-    @GET("clientes/{id}/equipamentos")
-    Call<List<JsonObject>> listarPorCliente(@Path("id") Long id);
+    // Retorna apenas as localizações do cliente informado
+    @GET("localizacoes/cliente/{clienteId}")
+    Call<List<LocalizacaoModel>> listarLocalizacoesPorCliente(@Path("clienteId") Long clienteId);
+
+    // Cria nova localização vinculada a um cliente
+    @POST("localizacoes")
+    Call<LocalizacaoModel> criarLocalizacao(@Body LocalizacaoRequest request);
 
     // === AGENDAMENTOS ===
     @GET("agendamentos")

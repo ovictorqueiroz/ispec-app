@@ -4,8 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,7 +16,6 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.text.TextWatcher;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,15 +27,15 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.com.etecia.ispec_app.model.ClienteModel;
 import br.com.etecia.ispec_app.model.LocalizacaoModel;
 import br.com.etecia.ispec_app.model.TipoSensorModel;
-import br.com.etecia.ispec_app.repository.LocalizacaoCallback;
+import br.com.etecia.ispec_app.repository.LocalizacaoListCallback;
 import br.com.etecia.ispec_app.repository.LocalizacaoRepository;
 import br.com.etecia.ispec_app.requests.EquipamentoRequest;
 import br.com.etecia.ispec_app.service.ApiService;
@@ -49,18 +46,29 @@ import retrofit2.Response;
 
 public class CadastroEquipamentoActivity extends AppCompatActivity {
 
+    // Extras recebidos de EquipamentoActivity (quando vindo do fluxo cliente > equipamentos)
+    public static final String EXTRA_CLIENTE_ID   = "clienteId";
+    public static final String EXTRA_CLIENTE_NOME = "clienteNome";
+
     // Header
     private ImageView arrowLeft;
 
-    //Campos datas
+    // Datas formatadas para a API
     private String dataInstalacaoFormatada;
     private String dataValidadeFormatada;
     private String ultimaVerificacaoFormatada;
 
     // Campos comuns
-    private EditText edtIdCliente, edtNome, edtLocalizacao, edtDataInstalacao;
-    private Spinner spinnerStatus, spinnerTipo;
-    private TextView txtVIdCliente, txtLocalizacao;
+    private EditText edtIdCliente, edtNome, edtDataInstalacao;
+    private Spinner spinnerStatus, spinnerTipo, spinnerLocalizacao;
+    private TextView txtVIdCliente, txtSemLocalizacoes;
+    private LinearLayout campoLocalizacaoContainer;
+
+    // Lista de localizações carregadas do backend
+    private List<LocalizacaoModel> listaLocalizacoes = new ArrayList<>();
+
+    // clienteId pré-preenchido (quando vindo de EquipamentoActivity)
+    private Long clienteIdPreenchido = null;
 
     // Campos Extintor
     private LinearLayout camposExtintor;
@@ -89,7 +97,7 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
     // ----------------------------------------------------------------
     private void datePicker(EditText campo) {
         LocalDate hoje = LocalDate.now();
-        DatePickerDialog dialog = new DatePickerDialog(
+        new DatePickerDialog(
                 this,
                 (view, year, month, dayOfMonth) -> {
                     String dataStandart = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth);
@@ -102,21 +110,80 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
                     } else if (campo == edtUltimaVerificacao) {
                         ultimaVerificacaoFormatada = dataStandart;
                     }
-
                     campo.setText(dataUser);
                 },
                 hoje.getYear(), hoje.getMonthValue() - 1, hoje.getDayOfMonth()
-        );
-        dialog.show();
+        ).show();
+    }
+
+    // ----------------------------------------------------------------
+    // Carrega localizações do cliente no Spinner
+    // ----------------------------------------------------------------
+    private void carregarLocalizacoes(Long clienteId) {
+        txtSemLocalizacoes.setVisibility(View.GONE);
+        spinnerLocalizacao.setEnabled(false);
+
+        LocalizacaoRepository repo = new LocalizacaoRepository(getApplicationContext());
+        repo.listarPorCliente(clienteId, new LocalizacaoListCallback() {
+            @Override
+            public void onSucesso(List<LocalizacaoModel> localizacoes) {
+                listaLocalizacoes = localizacoes;
+                spinnerLocalizacao.setEnabled(true);
+
+                if (localizacoes.isEmpty()) {
+                    txtSemLocalizacoes.setVisibility(View.VISIBLE);
+                    spinnerLocalizacao.setAdapter(null);
+                    return;
+                }
+
+                List<String> labels = localizacoes.stream()
+                        .map(l -> formatarLocalizacao(l))
+                        .collect(Collectors.toList());
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                        CadastroEquipamentoActivity.this,
+                        android.R.layout.simple_spinner_item,
+                        labels
+                );
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerLocalizacao.setAdapter(adapter);
+            }
+
+            @Override
+            public void onErro(String mensagem) {
+                txtSemLocalizacoes.setText("Erro ao carregar localizações");
+                txtSemLocalizacoes.setVisibility(View.VISIBLE);
+                Log.e("LOCALIZACAO", mensagem);
+            }
+        });
+    }
+
+    private String formatarLocalizacao(LocalizacaoModel loc) {
+        StringBuilder sb = new StringBuilder();
+        if (loc.getBloco() != null && !loc.getBloco().isEmpty()) sb.append("Bloco ").append(loc.getBloco());
+        if (loc.getAndar() != null && !loc.getAndar().isEmpty()) {
+            if (sb.length() > 0) sb.append(" | ");
+            sb.append("Andar ").append(loc.getAndar());
+        }
+        if (loc.getSala() != null && !loc.getSala().isEmpty()) {
+            if (sb.length() > 0) sb.append(" | ");
+            sb.append("Sala ").append(loc.getSala());
+        }
+        if (sb.length() == 0) sb.append("Localização #").append(loc.getId());
+        return sb.toString();
     }
 
     // ----------------------------------------------------------------
     // Validação dos campos comuns
     // ----------------------------------------------------------------
     private boolean camposComumPreenchidos() {
-        if (edtIdCliente.getText().toString().trim().isEmpty()) {
-            edtIdCliente.setError("Informe o código do cliente");
-            edtIdCliente.requestFocus();
+        // clienteId: pode vir pré-preenchido ou digitado
+        Long clienteId = getClienteId();
+        if (clienteId == null) {
+            if (clienteIdPreenchido == null) {
+                edtIdCliente.setError("Informe o código do cliente");
+                edtIdCliente.requestFocus();
+            }
             return false;
         }
         if (edtNome.getText().toString().trim().isEmpty()) {
@@ -124,12 +191,11 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
             edtNome.requestFocus();
             return false;
         }
-        if (edtLocalizacao.getText().toString().trim().isEmpty()) {
-            edtLocalizacao.setError("Informe a localização");
-            edtLocalizacao.requestFocus();
+        if (listaLocalizacoes.isEmpty() || spinnerLocalizacao.getSelectedItemPosition() < 0) {
+            Toast.makeText(this, "Selecione uma localização", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (edtDataInstalacao.getText().toString().trim().isEmpty()) {
+        if (dataInstalacaoFormatada == null || dataInstalacaoFormatada.isEmpty()) {
             edtDataInstalacao.setError("Informe a data de instalação");
             edtDataInstalacao.requestFocus();
             return false;
@@ -137,44 +203,43 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         return true;
     }
 
+    // Retorna o clienteId seja ele pré-preenchido ou digitado no campo
+    private Long getClienteId() {
+        if (clienteIdPreenchido != null) return clienteIdPreenchido;
+        String txt = edtIdCliente.getText().toString().trim();
+        if (txt.isEmpty()) return null;
+        try { return Long.parseLong(txt); } catch (NumberFormatException e) { return null; }
+    }
+
     // ----------------------------------------------------------------
-    // Coleta os dados do formulário e monta o EquipamentoRequest
+    // Monta o EquipamentoRequest
     // ----------------------------------------------------------------
     private EquipamentoRequest montarRequest() {
         EquipamentoRequest req = new EquipamentoRequest();
 
-        // Campos comuns
-        req.setCliente(new EquipamentoRequest.IdWrapper(Long.parseLong(edtIdCliente.getText().toString().trim())));
+        req.setCliente(new EquipamentoRequest.IdWrapper(getClienteId()));
         req.setNome(edtNome.getText().toString().trim());
-        req.setLocalizacao(new EquipamentoRequest.IdWrapper(Long.parseLong(edtLocalizacao.getText().toString().trim())));
+
+        // Localização vem do Spinner
+        LocalizacaoModel locSelecionada = listaLocalizacoes.get(spinnerLocalizacao.getSelectedItemPosition());
+        req.setLocalizacao(new EquipamentoRequest.IdWrapper(locSelecionada.getId()));
+
         req.setDataInstalacao(dataInstalacaoFormatada.trim());
         req.setStatus(spinnerStatus.getSelectedItem().toString());
 
         String tipoStr = spinnerTipo.getSelectedItem().toString();
+        req.setTipo(tipoStr);
         EquipamentoRequest.IdWrapper tipoWrapper;
 
-        req.setTipo(tipoStr);
-
-
-        // Campos específicos por tipo
         switch (tipoStr) {
             case "Extintor":
                 tipoWrapper = new EquipamentoRequest.IdWrapper(1);
-
                 List<Integer> ids = classeFogoMap.get(spinnerClasseFogo.getSelectedItem().toString());
-                List<EquipamentoRequest.IdWrapper> wrappers = ids.stream()
-                        .map(id -> new EquipamentoRequest.IdWrapper(id))
-                        .collect(Collectors.toList());
-                req.setClasseFogo(wrappers);
-
-                int idAgente = agenteMap.get(spinnerClasseFogo.getSelectedItem().toString());
-                req.setAgente(new EquipamentoRequest.IdWrapper(idAgente));
-
+                req.setClasseFogo(ids.stream().map(EquipamentoRequest.IdWrapper::new).collect(Collectors.toList()));
+                req.setAgente(new EquipamentoRequest.IdWrapper(agenteMap.get(spinnerClasseFogo.getSelectedItem().toString())));
                 String capStr = edtCapacidade.getText().toString().trim();
                 if (!capStr.isEmpty()) req.setCapacidade(Double.parseDouble(capStr));
-
-                req.setDataValidade(dataValidadeFormatada.trim());
-
+                req.setDataValidade(dataValidadeFormatada != null ? dataValidadeFormatada.trim() : null);
                 String pressaoStr = edtPressao.getText().toString().trim();
                 if (!pressaoStr.isEmpty()) req.setPressao(Double.parseDouble(pressaoStr));
                 break;
@@ -182,19 +247,16 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
             case "Alarme":
                 tipoWrapper = new EquipamentoRequest.IdWrapper(2);
                 req.setTipoSensor(tipoSensorMap.get(spinnerTipoSensor.getSelectedItem().toString()));
-                req.setUltimaVerificacao(ultimaVerificacaoFormatada.trim());
+                req.setUltimaVerificacao(ultimaVerificacaoFormatada != null ? ultimaVerificacaoFormatada.trim() : null);
                 req.setFuncionando(switchFuncionando.isChecked());
                 break;
 
             case "Hidrante":
                 tipoWrapper = new EquipamentoRequest.IdWrapper(3);
                 String pressaoAguaStr = edtPressaoAgua.getText().toString().trim();
-                if (!pressaoAguaStr.isEmpty())
-                    req.setPressaoAgua(Double.parseDouble(pressaoAguaStr));
-
+                if (!pressaoAguaStr.isEmpty()) req.setPressaoAgua(Double.parseDouble(pressaoAguaStr));
                 String compStr = edtCompMangueira.getText().toString().trim();
                 if (!compStr.isEmpty()) req.setComprimentoMangueira(Double.parseDouble(compStr));
-
                 req.setDisponivel(switchDisponivel.isChecked());
                 break;
 
@@ -203,37 +265,30 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
                 break;
         }
         req.setTipoEquipamento(tipoWrapper);
-        Gson gson = new Gson();
-        String json = gson.toJson(req);
-
-        Log.d("testeCadastro", json);
-
+        Log.d("testeCadastro", new Gson().toJson(req));
         return req;
     }
 
     private void limparFormulario() {
-        // Campos comuns
-        edtIdCliente.setText("");
+        if (clienteIdPreenchido == null) {
+            edtIdCliente.setText("");
+            txtVIdCliente.setVisibility(View.GONE);
+            listaLocalizacoes.clear();
+            spinnerLocalizacao.setAdapter(null);
+        }
         edtNome.setText("");
-        edtLocalizacao.setText("");
         edtDataInstalacao.setText("");
         dataInstalacaoFormatada = null;
         spinnerStatus.setSelection(0);
         spinnerTipo.setSelection(0);
-
-        // Campos Extintor
         edtCapacidade.setText("");
         edtDataValidade.setText("");
         edtPressao.setText("");
         dataValidadeFormatada = null;
         spinnerClasseFogo.setSelection(0);
-
-        // Campos Alarme
         edtUltimaVerificacao.setText("");
         ultimaVerificacaoFormatada = null;
         switchFuncionando.setChecked(false);
-
-        // Campos Hidrante
         edtPressaoAgua.setText("");
         edtCompMangueira.setText("");
         switchDisponivel.setChecked(false);
@@ -246,112 +301,33 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         if (!camposComumPreenchidos()) return;
 
         EquipamentoRequest request = montarRequest();
-
         ApiService api = RetrofitClient.getClient(getApplicationContext()).create(ApiService.class);
-        Call<Void> call = api.cadastrarEquipamento(request);
-
-        // Desabilita o botão para evitar duplo envio
         btnCadastrar.setEnabled(false);
-        Log.d("testeAPICadastro", call.request().url().toString());
-        call.enqueue(new Callback<Void>() {
+
+        api.cadastrarEquipamento(request).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 btnCadastrar.setEnabled(true);
-
                 if (response.isSuccessful()) {
-                    Toast.makeText(
-                            CadastroEquipamentoActivity.this,
-                            "Equipamento cadastrado com sucesso!",
-                            Toast.LENGTH_SHORT
-                    ).show();
+                    Toast.makeText(CadastroEquipamentoActivity.this,
+                            "Equipamento cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
                     limparFormulario();
-
                 } else {
                     String errorMsg = "Erro desconhecido";
-                    try {
-                        errorMsg = response.errorBody().string();
-                        Log.e("ERRO_CADASTRO", errorMsg);
-                    } catch (IOException e) {
-                        errorMsg = e.getMessage();
-                    }
-                    Toast.makeText(
-                            CadastroEquipamentoActivity.this,
-                            "Erro ao cadastrar: " + errorMsg,
-                            Toast.LENGTH_LONG
-                    ).show();
+                    try { errorMsg = response.errorBody().string(); } catch (IOException e) { errorMsg = e.getMessage(); }
+                    Log.e("ERRO_CADASTRO", errorMsg);
+                    Toast.makeText(CadastroEquipamentoActivity.this,
+                            "Erro ao cadastrar: " + errorMsg, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 btnCadastrar.setEnabled(true);
-                Toast.makeText(
-                        CadastroEquipamentoActivity.this,
-                        "Falha na conexão: " + t.getMessage(),
-                        Toast.LENGTH_LONG
-                ).show();
+                Toast.makeText(CadastroEquipamentoActivity.this,
+                        "Falha na conexão: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    private void buscarCliente(Long id) {
-        txtVIdCliente.setVisibility(View.VISIBLE);
-        txtVIdCliente.setText("Buscando...");
-        txtVIdCliente.setTextColor(Color.rgb(179, 177, 177));
-
-        ApiService api = RetrofitClient.getClient(getApplicationContext()).create(ApiService.class);
-        Call<ClienteModel> call = api.buscarCliente(id);
-
-        call.enqueue(new Callback<ClienteModel>() {
-            @Override
-            public void onResponse(Call<ClienteModel> call, Response<ClienteModel> response) {
-                if (response.isSuccessful()) {
-                    txtVIdCliente.setVisibility(View.VISIBLE);
-                    txtVIdCliente.setText(response.body().getRazaoSocial());
-                    txtVIdCliente.setTextColor(Color.rgb(125, 149, 85));
-                } else {
-                    txtVIdCliente.setVisibility(View.VISIBLE);
-                    txtVIdCliente.setText("Cliente não encontrado");
-                    txtVIdCliente.setTextColor(Color.rgb(163, 29, 29));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ClienteModel> call, Throwable t) {
-                txtVIdCliente.setVisibility(View.VISIBLE);
-                txtVIdCliente.setText("Erro de conexão");
-                txtVIdCliente.setTextColor(Color.rgb(163, 29, 29));
-            }
-        });
-    }
-
-    private void buscarLocalizacao(long id) {
-        txtLocalizacao.setVisibility(View.VISIBLE);
-        txtLocalizacao.setText("Buscando...");
-        txtLocalizacao.setTextColor(Color.rgb(179, 177, 177));
-
-        LocalizacaoRepository repository = new LocalizacaoRepository(getApplicationContext());
-
-        repository.buscarLocalizacao(new LocalizacaoCallback() {
-            @Override
-            public void onSucesso(LocalizacaoModel localizacao) {
-                String texto = String.format("%s | %s | %s",
-                        localizacao.getBloco(),
-                        localizacao.getAndar(),
-                        localizacao.getSala());
-
-                txtLocalizacao.setVisibility(View.VISIBLE);
-                txtLocalizacao.setText(texto);
-                txtLocalizacao.setTextColor(Color.rgb(127, 149, 85));
-            }
-
-            @Override
-            public void onErro(String mensagem) {
-                txtLocalizacao.setVisibility(View.VISIBLE);
-                txtLocalizacao.setText("Localização não encontrada");
-                txtLocalizacao.setTextColor(Color.rgb(163, 29, 29));
-            }
-        }, id);
     }
 
     // ----------------------------------------------------------------
@@ -368,115 +344,111 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Verifica se veio com clienteId pré-preenchido (fluxo: Clientes > Equipamentos > Cadastrar)
+        long extraId = getIntent().getLongExtra(EXTRA_CLIENTE_ID, -1L);
+        if (extraId != -1L) {
+            clienteIdPreenchido = extraId;
+        }
+
         // Header — botão voltar
         arrowLeft = findViewById(R.id.arrowLeft);
         arrowLeft.setOnClickListener(v -> {
-            startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+            if (clienteIdPreenchido != null) {
+                // Volta para EquipamentoActivity mantendo o contexto do cliente
+                Intent intent = new Intent(getApplicationContext(), EquipamentoActivity.class);
+                intent.putExtra(EquipamentoActivity.EXTRA_CLIENTE_ID, clienteIdPreenchido);
+                intent.putExtra(EquipamentoActivity.EXTRA_CLIENTE_NOME,
+                        getIntent().getStringExtra(EXTRA_CLIENTE_NOME));
+                startActivity(intent);
+            } else {
+                startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+            }
             finish();
         });
 
         // Campos comuns
-        edtIdCliente = findViewById(R.id.edtIdCliente);
-        txtVIdCliente = findViewById(R.id.txtVIdCliente);
-        txtLocalizacao = findViewById(R.id.txtLocalizacao);
-        edtLocalizacao = findViewById(R.id.edtLocalizacao);
-
-        edtNome = findViewById(R.id.edtNome);
-        edtLocalizacao = findViewById(R.id.edtLocalizacao);
+        edtIdCliente    = findViewById(R.id.edtIdCliente);
+        txtVIdCliente   = findViewById(R.id.txtVIdCliente);
+        edtNome         = findViewById(R.id.edtNome);
         edtDataInstalacao = findViewById(R.id.edtDataInstalacao);
-        spinnerStatus = findViewById(R.id.spinnerStatus);
-        spinnerTipo = findViewById(R.id.spinnerTipo);
+        spinnerStatus   = findViewById(R.id.spinnerStatus);
+        spinnerTipo     = findViewById(R.id.spinnerTipo);
+
+        // Campo localização agora é um Spinner
+        spinnerLocalizacao        = findViewById(R.id.spinnerLocalizacao);
+        txtSemLocalizacoes        = findViewById(R.id.txtSemLocalizacoes);
+        campoLocalizacaoContainer = findViewById(R.id.campoLocalizacaoContainer);
 
         // Campos Extintor
-        camposExtintor = findViewById(R.id.camposExtintor);
+        camposExtintor   = findViewById(R.id.camposExtintor);
         spinnerClasseFogo = findViewById(R.id.spinnerClasseFogo);
-        edtCapacidade = findViewById(R.id.edtCapacidade);
-        edtDataValidade = findViewById(R.id.edtDataValidade);
-        edtPressao = findViewById(R.id.edtPressao);
+        edtCapacidade    = findViewById(R.id.edtCapacidade);
+        edtDataValidade  = findViewById(R.id.edtDataValidade);
+        edtPressao       = findViewById(R.id.edtPressao);
 
         // Campos Alarme
-        camposAlarme = findViewById(R.id.camposAlarme);
-        spinnerTipoSensor = findViewById(R.id.spinnerTipoSensor);
+        camposAlarme        = findViewById(R.id.camposAlarme);
+        spinnerTipoSensor   = findViewById(R.id.spinnerTipoSensor);
         edtUltimaVerificacao = findViewById(R.id.edtUltimaVerificacao);
-        switchFuncionando = findViewById(R.id.switchFuncionando);
+        switchFuncionando   = findViewById(R.id.switchFuncionando);
 
         // Campos Hidrante
-        camposHidrante = findViewById(R.id.camposHidrante);
-        edtPressaoAgua = findViewById(R.id.edtPressaoAgua);
+        camposHidrante   = findViewById(R.id.camposHidrante);
+        edtPressaoAgua   = findViewById(R.id.edtPressaoAgua);
         edtCompMangueira = findViewById(R.id.edtCompMangueira);
         switchDisponivel = findViewById(R.id.switchDisponivel);
 
-        // Botão
         btnCadastrar = findViewById(R.id.btnCadastrar);
 
-        edtIdCliente.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().trim().isEmpty() || !TextUtils.isDigitsOnly(s.toString())) {
-                    txtVIdCliente.setVisibility(View.GONE);
-                    return;
+        // ── Se clienteId foi pré-preenchido: oculta o campo de texto, mostra nome, carrega localizações ──
+        if (clienteIdPreenchido != null) {
+            edtIdCliente.setVisibility(View.GONE);
+            txtVIdCliente.setVisibility(View.VISIBLE);
+            String clienteNome = getIntent().getStringExtra(EXTRA_CLIENTE_NOME);
+            txtVIdCliente.setText(clienteNome != null ? clienteNome : "Cliente #" + clienteIdPreenchido);
+            txtVIdCliente.setTextColor(Color.rgb(125, 149, 85));
+            carregarLocalizacoes(clienteIdPreenchido);
+        } else {
+            // Modo normal: usuário digita o clienteId e o spinner carrega ao sair do campo
+            edtIdCliente.setOnFocusChangeListener((v, hasFocus) -> {
+                if (!hasFocus) {
+                    String txt = edtIdCliente.getText().toString().trim();
+                    if (!txt.isEmpty()) {
+                        try {
+                            Long id = Long.parseLong(txt);
+                            buscarClienteECarregarLocalizacoes(id);
+                        } catch (NumberFormatException ignored) {}
+                    }
                 }
-                buscarCliente(Long.parseLong(s.toString()));
-            }
-        });
+            });
+        }
 
-        edtLocalizacao.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().trim().isEmpty() || !TextUtils.isDigitsOnly(s.toString())) {
-                    txtLocalizacao.setVisibility(View.GONE);
-                    return;
-                }
-                buscarLocalizacao(Long.parseLong(s.toString()));
-            }
-        });
-
-
-
-
-        // ---- Populando Spinners ----
+        // ── Spinners estáticos ──
         String[] statusEquipamento = {"ATIVO", "INATIVO"};
-        String[] tipoEquipamento = {"Alarme", "Extintor", "Hidrante"};
-        String[] classeFogo = {"Água - A/B/C", "Gás Carbônico - B/C", "Pó Químico - B/C",
-                "Pó Químico - A/B/C", "Pó Químico - D",
-                "Espuma - A/B/C", "Acetato de Potássio - K"};
-        String[] tipoSensor = {"Fumaça", "Temperatura", "Movimento", "Chama"};
+        String[] tipoEquipamento   = {"Alarme", "Extintor", "Hidrante"};
+        String[] classeFogo        = {"Água - A/B/C", "Gás Carbônico - B/C", "Pó Químico - B/C",
+                "Pó Químico - A/B/C", "Pó Químico - D", "Espuma - A/B/C", "Acetato de Potássio - K"};
+        String[] tipoSensor        = {"Fumaça", "Temperatura", "Movimento", "Chama"};
 
-        ArrayAdapter<String> adapter;
+        ArrayAdapter<String> adp;
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tipoEquipamento);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTipo.setAdapter(adapter);
+        adp = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tipoEquipamento);
+        adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTipo.setAdapter(adp);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusEquipamento);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerStatus.setAdapter(adapter);
+        adp = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, statusEquipamento);
+        adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerStatus.setAdapter(adp);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, classeFogo);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerClasseFogo.setAdapter(adapter);
+        adp = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, classeFogo);
+        adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerClasseFogo.setAdapter(adp);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tipoSensor);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTipoSensor.setAdapter(adapter);
+        adp = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tipoSensor);
+        adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTipoSensor.setAdapter(adp);
 
-        // Populando HashMaps dos Extintores
+        // Mapas Extintor
         agenteMap.put("Água - A/B/C", 1);
         agenteMap.put("Gás Carbônico - B/C", 3);
         agenteMap.put("Pó Químico - B/C", 2);
@@ -493,28 +465,16 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         classeFogoMap.put("Espuma - A/B/C", Arrays.asList(1, 2, 3));
         classeFogoMap.put("Acetato de Potássio - K", Arrays.asList(5));
 
-        TipoSensorModel sensorFumacaOBJ = new TipoSensorModel();
-        sensorFumacaOBJ.setId(1);
-        sensorFumacaOBJ.setDescSensor("Fumaça");
-        tipoSensorMap.put("Fumaça", sensorFumacaOBJ);
+        // Mapa TipoSensor
+        String[][] sensores = {{"Fumaça","1"}, {"Temperatura","2"}, {"Movimento","3"}, {"Chama","4"}};
+        for (String[] s : sensores) {
+            TipoSensorModel m = new TipoSensorModel();
+            m.setId(Integer.parseInt(s[1]));
+            m.setDescSensor(s[0]);
+            tipoSensorMap.put(s[0], m);
+        }
 
-        TipoSensorModel sensorTempOBJ = new TipoSensorModel();
-        sensorTempOBJ.setId(2);
-        sensorTempOBJ.setDescSensor("Temperatura");
-        tipoSensorMap.put("Temperatura", sensorTempOBJ);
-
-        TipoSensorModel sensorMovOBJ = new TipoSensorModel();
-        sensorMovOBJ.setId(3);
-        sensorMovOBJ.setDescSensor("Movimento");
-        tipoSensorMap.put("Movimento", sensorMovOBJ);
-
-        TipoSensorModel sensorChaOBJ = new TipoSensorModel();
-        sensorChaOBJ.setId(4);
-        sensorChaOBJ.setDescSensor("Chama");
-        tipoSensorMap.put("Chama", sensorChaOBJ);
-
-
-        // ---- Mostrar/esconder campos por tipo ----
+        // Mostrar/esconder campos por tipo
         spinnerTipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -522,18 +482,11 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
                 camposExtintor.setVisibility(View.GONE);
                 camposHidrante.setVisibility(View.GONE);
                 switch (position) {
-                    case 0:
-                        camposAlarme.setVisibility(View.VISIBLE);
-                        break;
-                    case 1:
-                        camposExtintor.setVisibility(View.VISIBLE);
-                        break;
-                    case 2:
-                        camposHidrante.setVisibility(View.VISIBLE);
-                        break;
+                    case 0: camposAlarme.setVisibility(View.VISIBLE); break;
+                    case 1: camposExtintor.setVisibility(View.VISIBLE); break;
+                    case 2: camposHidrante.setVisibility(View.VISIBLE); break;
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 camposAlarme.setVisibility(View.GONE);
@@ -542,12 +495,42 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
             }
         });
 
-        // ---- DatePickers ----
+        // DatePickers
         edtDataInstalacao.setOnClickListener(v -> datePicker(edtDataInstalacao));
         edtDataValidade.setOnClickListener(v -> datePicker(edtDataValidade));
         edtUltimaVerificacao.setOnClickListener(v -> datePicker(edtUltimaVerificacao));
 
-        // ---- Botão Cadastrar ----
+        // Botão Cadastrar
         btnCadastrar.setOnClickListener(v -> cadastrarEquipamento());
+    }
+
+    // Busca nome do cliente e já dispara o carregamento das localizações
+    private void buscarClienteECarregarLocalizacoes(Long id) {
+        txtVIdCliente.setVisibility(View.VISIBLE);
+        txtVIdCliente.setText("Buscando...");
+        txtVIdCliente.setTextColor(Color.rgb(179, 177, 177));
+
+        ApiService api = RetrofitClient.getClient(getApplicationContext()).create(ApiService.class);
+        api.buscarCliente(id).enqueue(new Callback<br.com.etecia.ispec_app.model.ClienteModel>() {
+            @Override
+            public void onResponse(Call<br.com.etecia.ispec_app.model.ClienteModel> call,
+                                   Response<br.com.etecia.ispec_app.model.ClienteModel> response) {
+                if (response.isSuccessful()) {
+                    txtVIdCliente.setText(response.body().getRazaoSocial());
+                    txtVIdCliente.setTextColor(Color.rgb(125, 149, 85));
+                    carregarLocalizacoes(id);
+                } else {
+                    txtVIdCliente.setText("Cliente não encontrado");
+                    txtVIdCliente.setTextColor(Color.rgb(163, 29, 29));
+                    listaLocalizacoes.clear();
+                    spinnerLocalizacao.setAdapter(null);
+                }
+            }
+            @Override
+            public void onFailure(Call<br.com.etecia.ispec_app.model.ClienteModel> call, Throwable t) {
+                txtVIdCliente.setText("Erro de conexão");
+                txtVIdCliente.setTextColor(Color.rgb(163, 29, 29));
+            }
+        });
     }
 }

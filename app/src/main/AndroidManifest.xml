@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Ispecapp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".CadastroLocalizacaoActivity"
+            android:exported="false" />
+        <activity
             android:name=".InspecoesActivity"
             android:exported="false" />
 
@@ -63,7 +66,7 @@
             android:name=".LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".SplashActivity"
+            android:name="SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -9,11 +9,13 @@ public class LocalizacaoModel {
     private String sala;
     private String descricao;
 
+    // O backend serializa a localização com o objeto cliente embutido: { "cliente": { "id": 1, ... } }
+    // Precisamos dele para filtrar localmente por clienteId
+    private ClienteRef cliente;
+
     public LocalizacaoModel() {}
 
-    public LocalizacaoModel(Long id) {
-        this.id = id;
-    }
+    public LocalizacaoModel(Long id) { this.id = id; }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -32,4 +34,14 @@ public class LocalizacaoModel {
 
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
+
+    public ClienteRef getCliente() { return cliente; }
+    public void setCliente(ClienteRef cliente) { this.cliente = cliente; }
+
+    // Classe interna que mapeia apenas o id do cliente no JSON
+    public static class ClienteRef {
+        private Long id;
+        public Long getId() { return id; }
+        public void setId(Long id) { this.id = id; }
+    }
 }

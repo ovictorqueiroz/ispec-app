@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradiente"
-    tools:context="MenuPrincipalActivity">
+    android:background="@drawable/bg_gradiente">
 
-
+    <!-- HEADER -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -23,19 +21,34 @@
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_arrow_left" />
 
-
-        <TextView
-            android:id="@+id/txtAviso"
-            android:layout_width="wrap_content"
+        <!-- Título + horário de atualização empilhados -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Avisos"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Avisos"
+                android:textColor="@color/white"
+                android:textSize="28sp"
+                android:textStyle="bold" />
 
+            <!-- "Atualizado às HH:mm" — visível após o primeiro carregamento -->
+            <TextView
+                android:id="@+id/tvAtualizadoAs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cinzaClaro"
+                android:textSize="11sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <!-- Ícone decorativo de lista (padrão do projeto) -->
         <ImageView
             android:layout_width="75dp"
             android:layout_height="match_parent"
@@ -46,6 +59,7 @@
 
     </LinearLayout>
 
+    <!-- BOTTOM NAV -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
@@ -58,23 +72,29 @@
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu" />
 
-    <LinearLayout
-        android:id="@+id/menuBody"
+    <!-- BODY -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swpRefreshAvisos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/header"
-        android:background="@drawable/bg_cinza_claro"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingBottom="95dp">
+        android:layout_below="@id/header"
+        android:layout_above="@id/bottomNavigationView">
 
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerAvisos"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"/>
-    </LinearLayout>
+            android:background="@drawable/bg_cinza_claro"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerAvisos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:clipToPadding="false" />
+
+        </LinearLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

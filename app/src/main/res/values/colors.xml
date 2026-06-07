@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    MODIFICADO: adicionadas as cores amarelo e laranja para os
+    cabeçalhos de seção da tela de Avisos (blocos 2 e 3 do READMEFIRST).
+    Todas as cores anteriores foram mantidas intactas.
+-->
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
@@ -9,5 +14,7 @@
     <color name="verdeSalvar">#B2D579</color>
     <color name="verdeEscura">#596B3D</color>
 
-
+    <!-- Avisos: indicadores de prazo -->
+    <color name="amarelo">#C49A00</color>
+    <color name="laranja">#C46200</color>
 </resources>

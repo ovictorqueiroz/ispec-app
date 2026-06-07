@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import java.util.List;
 
 import br.com.etecia.ispec_app.model.AgendamentoModel;
+import br.com.etecia.ispec_app.model.AvisosResponse;
 import br.com.etecia.ispec_app.model.ClienteModel;
 import br.com.etecia.ispec_app.model.InspecaoModel;
 import br.com.etecia.ispec_app.model.LocalizacaoModel;
@@ -37,11 +38,9 @@ public interface ApiService {
     @GET("localizacoes/{id}")
     Call<LocalizacaoModel> buscarLocalizacao(@Path("id") Long id);
 
-    // Retorna todas as localizações — o filtro por cliente é feito no app
     @GET("localizacoes")
     Call<List<LocalizacaoModel>> listarTodasLocalizacoes();
 
-    // Cria nova localização (POST /localizacoes já existe no backend)
     @POST("localizacoes")
     Call<LocalizacaoModel> criarLocalizacao(@Body LocalizacaoRequest request);
 
@@ -74,4 +73,10 @@ public interface ApiService {
     // === PERGUNTAS DE INSPEÇÃO ===
     @GET("perguntas-inspecao/tipo/{tipo}")
     Call<List<PerguntaInspecaoModel>> listarPerguntasPorTipo(@Path("tipo") String tipo);
+
+    // === AVISOS ===
+    // Retorna o dashboard dinâmico: equipamentos vencidos, vencendo em 30/90 dias,
+    // inspeções reprovadas recentes e agenda da semana.
+    @GET("avisos")
+    Call<AvisosResponse> buscarAvisos();
 }

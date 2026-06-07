@@ -2,6 +2,8 @@ package br.com.etecia.ispec_app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,10 +11,24 @@ import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 
+import br.com.etecia.ispec_app.viewmodel.AvisosViewModel;
+
+/**
+ * MODIFICADO: adicionado badge de avisos no cardAvisos.
+ *
+ * O badge exibe a soma de:
+ *   vencidos + vencendo30 + vencendo90 + reprovadas
+ * (Agenda da semana NÃO entra no cálculo — READMEFIRST)
+ *
+ * Caso total == 0, o badge fica oculto (visibility GONE).
+ */
 public class MenuPrincipalActivity extends AppCompatActivity {
 
     CardView cardAvisos, cardClientes, cardRelatorios, cardAgenda, cardCadEquipamentos, cardInspecoes;
+    private TextView tvBadgeAvisos;
+    private AvisosViewModel avisosViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +46,9 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         cardCadEquipamentos  = findViewById(R.id.cardCadEquipamentos);
         cardAgenda           = findViewById(R.id.cardAgenda);
         cardInspecoes        = findViewById(R.id.cardInspecoes);
+        tvBadgeAvisos        = findViewById(R.id.tvBadgeAvisos);
 
+        // --- Navegação ---
         cardAvisos.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), AvisosActivity.class));
             finish();
@@ -51,10 +69,24 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             finish();
         });
 
-        // Inspeções → histórico de inspeções
         cardInspecoes.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), InspecoesActivity.class));
             finish();
         });
+
+        // --- Badge de avisos ---
+        avisosViewModel = new ViewModelProvider(this).get(AvisosViewModel.class);
+
+        avisosViewModel.getTotalAvisos().observe(this, total -> {
+            if (total != null && total > 0) {
+                tvBadgeAvisos.setText(total + (total == 1 ? " aviso" : " avisos"));
+                tvBadgeAvisos.setVisibility(View.VISIBLE);
+            } else {
+                tvBadgeAvisos.setVisibility(View.GONE);
+            }
+        });
+
+        // Busca silenciosa ao abrir o menu (apenas para o badge)
+        avisosViewModel.carregarAvisos();
     }
 }

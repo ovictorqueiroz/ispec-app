@@ -13,6 +13,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import br.com.etecia.ispec_app.viewmodel.AvisosViewModel;
 
 /**
@@ -25,8 +27,9 @@ import br.com.etecia.ispec_app.viewmodel.AvisosViewModel;
  * Caso total == 0, o badge fica oculto (visibility GONE).
  */
 public class MenuPrincipalActivity extends AppCompatActivity {
+    BottomNavigationView bottomNavigationView;
 
-    CardView cardAvisos, cardClientes, cardRelatorios, cardAgenda, cardCadEquipamentos, cardInspecoes;
+    CardView cardAvisos, cardClientes, cardAgenda, cardCadEquipamentos, cardInspecoes;
     private TextView tvBadgeAvisos;
     private AvisosViewModel avisosViewModel;
 
@@ -40,7 +43,7 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
         cardAvisos           = findViewById(R.id.cardAvisos);
         cardClientes         = findViewById(R.id.cardClientes);
         cardCadEquipamentos  = findViewById(R.id.cardCadEquipamentos);
@@ -49,6 +52,17 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         tvBadgeAvisos        = findViewById(R.id.tvBadgeAvisos);
 
         // --- Navegação ---
+        bottomNavigationView.setOnItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.nav_home:
+                    startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+                    finish();
+                    break;
+            }
+            return true;
+        });
+
+
         cardAvisos.setOnClickListener(v -> {
             startActivity(new Intent(getApplicationContext(), AvisosActivity.class));
             finish();

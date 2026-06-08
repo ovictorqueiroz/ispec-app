@@ -4,17 +4,24 @@
     <item
         android:id="@+id/nav_perfil"
         android:icon="@drawable/ic_user_duotone"
-        android:title="Perfil" />
+        android:title="Perfil"
+        android:iconTint="@color/vermelhoEscuro"
+        />
 
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/home_duotone"
-        android:title="Início" />
+        android:title="Início"
+        android:iconTint="@color/vermelhoEscuro"
+
+        />
 
     <item
         android:id="@+id/nav_config"
         android:icon="@drawable/ic_f_gear_six_duotone"
-        android:title="Configurações" />
+        android:title="Configurações"
+        android:iconTint="@color/vermelhoEscuro"
+        />
 
 
 

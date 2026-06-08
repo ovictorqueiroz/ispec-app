@@ -75,8 +75,7 @@ public interface ApiService {
     Call<List<PerguntaInspecaoModel>> listarPerguntasPorTipo(@Path("tipo") String tipo);
 
     // === AVISOS ===
-    // Retorna o dashboard dinâmico: equipamentos vencidos, vencendo em 30/90 dias,
-    // inspeções reprovadas recentes e agenda da semana.
+
     @GET("avisos")
     Call<AvisosResponse> buscarAvisos();
 }

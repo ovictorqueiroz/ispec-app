@@ -36,6 +36,7 @@ import br.com.etecia.ispec_app.model.UsuarioModel;
 import br.com.etecia.ispec_app.viewmodel.AgendamentoViewModel;
 
 public class AgendaActivity extends AppCompatActivity {
+    BottomNavigationView bottomNavigationView;
 
     private AgendamentoViewModel viewModel;
     private AgendamentoAdapter adapter;
@@ -60,6 +61,17 @@ public class AgendaActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(menuItem -> {
+            int idItem = menuItem.getItemId();
+
+            if (idItem == R.id.nav_home){
+                startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+                finish();
+            }
+            return true;
         });
 
         // Inicializa com o mês atual

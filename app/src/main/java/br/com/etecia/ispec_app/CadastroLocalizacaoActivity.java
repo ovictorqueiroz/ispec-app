@@ -14,12 +14,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import br.com.etecia.ispec_app.repository.LocalizacaoCallback;
 import br.com.etecia.ispec_app.repository.LocalizacaoRepository;
 import br.com.etecia.ispec_app.model.LocalizacaoModel;
 import br.com.etecia.ispec_app.requests.LocalizacaoRequest;
 
 public class CadastroLocalizacaoActivity extends AppCompatActivity {
+
+    BottomNavigationView bottomNavigationView;
 
     public static final String EXTRA_CLIENTE_ID   = "clienteId";
     public static final String EXTRA_CLIENTE_NOME = "clienteNome";
@@ -40,6 +44,16 @@ public class CadastroLocalizacaoActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(menuItem -> {
+            int idItem = menuItem.getItemId();
+
+            if (idItem == R.id.nav_home){
+                startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+                finish();
+            }
+            return true;
         });
 
         // Recebe o clienteId e nome passados por EquipamentoActivity

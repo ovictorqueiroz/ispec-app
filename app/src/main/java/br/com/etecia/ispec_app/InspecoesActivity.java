@@ -18,12 +18,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 
 import br.com.etecia.ispec_app.adapter.InspecaoAdapter;
 import br.com.etecia.ispec_app.viewmodel.InspecaoViewModel;
 
 public class InspecoesActivity extends AppCompatActivity {
+    BottomNavigationView bottomNavigationView;
 
     private InspecaoViewModel viewModel;
     private InspecaoAdapter adapter;
@@ -46,6 +49,16 @@ public class InspecoesActivity extends AppCompatActivity {
         arrowLeft.setOnClickListener(v -> {
             startActivity(new Intent(this, MenuPrincipalActivity.class));
             finish();
+        });
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(menuItem -> {
+            int idItem = menuItem.getItemId();
+
+            if (idItem == R.id.nav_home){
+                startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+                finish();
+            }
+            return true;
         });
 
         // RecyclerView

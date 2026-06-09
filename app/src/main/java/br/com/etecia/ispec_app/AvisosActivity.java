@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -38,6 +40,7 @@ import br.com.etecia.ispec_app.viewmodel.AvisosViewModel;
  * Todos os dados são calculados dinamicamente no backend.
  */
 public class AvisosActivity extends AppCompatActivity {
+    BottomNavigationView bottomNavigationView;
 
     private AvisosViewModel viewModel;
     private AvisosAdapter   adapter;
@@ -54,6 +57,17 @@ public class AvisosActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(menuItem -> {
+            int idItem = menuItem.getItemId();
+
+            if (idItem == R.id.nav_home){
+                startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+                finish();
+            }
+            return true;
         });
 
         // --- Views ---

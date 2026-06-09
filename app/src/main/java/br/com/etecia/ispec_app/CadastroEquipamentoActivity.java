@@ -23,6 +23,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -45,6 +46,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CadastroEquipamentoActivity extends AppCompatActivity {
+
+    BottomNavigationView bottomNavigationView;
 
     // Extras recebidos de EquipamentoActivity (quando vindo do fluxo cliente > equipamentos)
     public static final String EXTRA_CLIENTE_ID   = "clienteId";
@@ -349,6 +352,17 @@ public class CadastroEquipamentoActivity extends AppCompatActivity {
         if (extraId != -1L) {
             clienteIdPreenchido = extraId;
         }
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(menuItem -> {
+            int idItem = menuItem.getItemId();
+
+            if (idItem == R.id.nav_home){
+                startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+                finish();
+            }
+            return true;
+        });
 
         // Header — botão voltar
         arrowLeft = findViewById(R.id.arrowLeft);

@@ -53,11 +53,11 @@ public class MenuPrincipalActivity extends AppCompatActivity {
 
         // --- Navegação ---
         bottomNavigationView.setOnItemSelectedListener(menuItem -> {
-            switch (menuItem.getItemId()) {
-                case R.id.nav_home:
-                    startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
-                    finish();
-                    break;
+            int idItem = menuItem.getItemId();
+
+            if (idItem == R.id.nav_home){
+                startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+                finish();
             }
             return true;
         });

@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 
 import br.com.etecia.ispec_app.adapter.ClienteAdapter;
@@ -25,6 +27,7 @@ import br.com.etecia.ispec_app.model.ClienteModel;
 import br.com.etecia.ispec_app.viewmodel.ClienteViewModel;
 
 public class ClientesActivity extends AppCompatActivity {
+    BottomNavigationView bottomNavigationView;
     private ImageView arrowLeft;
     private ClienteViewModel viewModel;
     private SwipeRefreshLayout swpRefresh;
@@ -39,6 +42,16 @@ public class ClientesActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(menuItem -> {
+            int idItem = menuItem.getItemId();
+
+            if (idItem == R.id.nav_home){
+                startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+                finish();
+            }
+            return true;
         });
 
         arrowLeft = findViewById(R.id.arrowLeft);

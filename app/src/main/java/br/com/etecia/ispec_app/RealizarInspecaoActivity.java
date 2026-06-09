@@ -20,6 +20,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -29,6 +31,7 @@ import br.com.etecia.ispec_app.requests.InspecaoRequest;
 import br.com.etecia.ispec_app.viewmodel.InspecaoViewModel;
 
 public class RealizarInspecaoActivity extends AppCompatActivity {
+
 
     public static final String EXTRA_EQUIPAMENTO_ID   = "equipamentoId";
     public static final String EXTRA_EQUIPAMENTO_NOME = "equipamentoNome";
@@ -52,6 +55,7 @@ public class RealizarInspecaoActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
 
         equipamentoId = getIntent().getLongExtra(EXTRA_EQUIPAMENTO_ID, -1L);
         String equipamentoNome = getIntent().getStringExtra(EXTRA_EQUIPAMENTO_NOME);

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import br.com.etecia.ispec_app.adapter.EquipamentoAdapter;
 import br.com.etecia.ispec_app.viewmodel.EquipamentoViewModel;
 
 public class EquipamentoActivity extends AppCompatActivity {
+    BottomNavigationView bottomNavigationView;
 
     public static final String EXTRA_CLIENTE_ID   = "clienteId";
     public static final String EXTRA_CLIENTE_NOME = "clienteNome";
@@ -49,6 +51,18 @@ public class EquipamentoActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+
+
+        });
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(menuItem -> {
+            int idItem = menuItem.getItemId();
+
+            if (idItem == R.id.nav_home){
+                startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+                finish();
+            }
+            return true;
         });
 
         arrowLeft = findViewById(R.id.arrowLeft);

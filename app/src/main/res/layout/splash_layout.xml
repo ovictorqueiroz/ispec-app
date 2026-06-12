@@ -20,7 +20,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:indeterminate="true"
-        android:layout_margin="20dp" />
+        android:layout_margin="20dp"
+        app:indicatorColor="@color/vermelhoEscuro"
+        />
 
 
 </LinearLayout>

@@ -67,14 +67,19 @@
         android:orientation="vertical"
         android:paddingBottom="95dp">
 
-        <!-- SEARCH BAR -->
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/search_bar"
+
+
+        <TextView
+            android:id="@+id/txtNomeUsuario"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:backgroundTint="@color/white"
             android:elevation="8dp"
-            android:hint="Pesquisar" />
+            android:text=""
+            android:textColor="@color/vermelhoClaro"
+            android:textSize="45dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            />
 
         <!-- GRID DE CARDS -->
         <LinearLayout

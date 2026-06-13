@@ -1,6 +1,7 @@
 package br.com.etecia.ispec_app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -29,6 +30,8 @@ import br.com.etecia.ispec_app.viewmodel.AvisosViewModel;
 public class MenuPrincipalActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
 
+    TextView txtNomeUsuario;
+
     CardView cardAvisos, cardClientes, cardAgenda, cardCadEquipamentos, cardInspecoes;
     private TextView tvBadgeAvisos;
     private AvisosViewModel avisosViewModel;
@@ -50,6 +53,7 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         cardAgenda           = findViewById(R.id.cardAgenda);
         cardInspecoes        = findViewById(R.id.cardInspecoes);
         tvBadgeAvisos        = findViewById(R.id.tvBadgeAvisos);
+        txtNomeUsuario = findViewById(R.id.txtNomeUsuario);
 
         // --- Navegação ---
         bottomNavigationView.setOnItemSelectedListener(menuItem -> {
@@ -61,6 +65,9 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             }
             return true;
         });
+        SharedPreferences prefs = getSharedPreferences("sessao", MODE_PRIVATE);
+        String nome = prefs.getString("username", "Usuário");
+        txtNomeUsuario.setText("Olá, " + nome + "!");
 
 
         cardAvisos.setOnClickListener(v -> {

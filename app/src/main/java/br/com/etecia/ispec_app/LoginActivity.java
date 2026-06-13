@@ -21,6 +21,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;
 
+import br.com.etecia.ispec_app.model.UsuarioModel;
 import br.com.etecia.ispec_app.service.ApiService;
 import br.com.etecia.ispec_app.service.RetrofitClient;
 import br.com.etecia.ispec_app.requests.LoginRequest;
@@ -113,8 +114,47 @@ public class LoginActivity extends AppCompatActivity {
                                 // Salva o token com a chave "token"
                                 editor.putString("token", token);
                                 editor.apply(); // Salva de forma assíncrona
-                                startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
-                                finish();
+                                Call<UsuarioModel> call1 = api.buscarDadosUsuario("Bearer " + token);
+
+                                call1.enqueue(new Callback<UsuarioModel>() {
+                                    @Override
+                                    public void onResponse(Call<UsuarioModel> call, Response<UsuarioModel> response) {
+                                        if (response.isSuccessful()){
+
+                                            String nomeUsuario = response.body().getNome();
+
+                                            prefs.edit().putString("username", nomeUsuario).apply();
+
+                                            startActivity(new Intent(getApplicationContext(), MenuPrincipalActivity.class));
+                                            finish();
+                                        }
+                                        else {
+                                            String errorMsg = "Erro desconhecido";
+                                            try {
+                                                errorMsg = response.errorBody().string();
+                                                Log.e("ERRO_AUTH", errorMsg);
+                                            } catch (IOException e) {
+                                                errorMsg = e.getMessage();
+                                            }
+                                            Toast.makeText(
+                                                    LoginActivity.this,
+                                                    "Erro ao Autenticar: " + errorMsg,
+                                                    Toast.LENGTH_LONG
+                                            ).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<UsuarioModel> call, Throwable t) {
+                                        Log.e("ERRO_CONEXAO", "Falha na conexão", t);
+                                        Toast.makeText(
+                                                LoginActivity.this,
+                                                "Falha na conexão: " + t.getMessage(),
+                                                Toast.LENGTH_LONG
+                                        ).show();
+                                    }
+                                });
+
                             } else {
                                 String errorMsg = "Erro desconhecido";
                                 try {

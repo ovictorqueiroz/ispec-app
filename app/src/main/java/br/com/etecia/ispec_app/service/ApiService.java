@@ -18,6 +18,7 @@ import br.com.etecia.ispec_app.requests.LoginRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -54,6 +55,8 @@ public interface ApiService {
     // === USUÁRIOS ===
     @GET("usuarios")
     Call<List<UsuarioModel>> listarUsuarios();
+    @GET("usuarios/me")
+    Call<UsuarioModel> buscarDadosUsuario(@Header("Authorization") String token);
 
     // === AUTH ===
     @POST("auth/login")
